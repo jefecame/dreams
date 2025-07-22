@@ -1,5 +1,5 @@
 @startuml dreams
-left to right direction
+'left to right direction
 skinparam classAttributeIconSize 0
 
 Mainframe Dreams
@@ -39,6 +39,6 @@ class Producto {
 Cliente "0..1" -- "0..*" Venta
 Venta "1" *-- "1..*" ItemVenta
 ItemVenta "1" -- "1" Producto
-Venta ..> Producto : <<uses>>
+Venta ..> Producto
 
 @enduml
