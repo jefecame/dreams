@@ -1,0 +1,43 @@
+@startuml Dreams
+left to right direction
+skinparam classAttributeIconSize 0
+
+Mainframe Dreams
+
+class Cliente {
+  - nombre: String
+  - email: String
+  + getNombre(): String
+  + getEmail(): String
+}
+
+class Venta {
+  - cliente: Cliente
+  - items: List<ItemVenta>
+  - total: double
+  + agregarProducto(Producto producto, int cantidad): void
+  + calcularTotal(): void
+  + mostrarFactura(): void
+}
+
+class ItemVenta {
+  - producto: Producto
+  - cantidad: int
+  + getSubtotal(): double
+  + getProducto(): Producto
+}
+
+class Producto {
+  - nombre: String
+  - precio: double
+  - categoria: String
+  - stock: int
+  + mostrarDetalles(): void
+  + actualizarStock(int cantidad): boolean
+}
+
+Cliente "1" --- "0..*" Venta
+Venta "1" *-- "1..*" ItemVenta
+ItemVenta "1" -- "1" Producto
+
+@enduml
