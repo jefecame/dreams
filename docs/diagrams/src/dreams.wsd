@@ -36,8 +36,9 @@ class Producto {
   + actualizarStock(int cantidad): boolean
 }
 
-Cliente "1" --- "0..*" Venta
+Cliente "0..1" -- "0..*" Venta
 Venta "1" *-- "1..*" ItemVenta
 ItemVenta "1" -- "1" Producto
+Venta ..> Producto : <<uses>>
 
 @enduml
