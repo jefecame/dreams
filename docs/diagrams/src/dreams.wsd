@@ -1,28 +1,30 @@
 @startuml dreams
-'left to right direction
 skinparam classAttributeIconSize 0
 
 package Dreams #DDDDDD {
 
-    class Cliente {
+    + class Cliente {
     - nombre: String
     - email: String
+    
     + getNombre(): String
     + getEmail(): String
     }
 
     class Venta {
     - cliente: Cliente
-    - items: 'List<ItemVenta>'
+    - items: List<ItemVenta>
     - total: double
-    + agregarProducto('Producto producto', 'int cantidad'): void
-    + calcularTotal(): void
+
+    + agregarProducto(producto: Producto, cantidad: int): void
+    # calcularTotal(): void
     + mostrarFactura(): void
     }
 
     class ItemVenta {
     - producto: Producto
     - cantidad: int
+    
     + getSubtotal(): double
     + getProducto(): Producto
     }
@@ -32,16 +34,31 @@ package Dreams #DDDDDD {
     - precio: double
     - categoria: String
     - stock: int
+
     + mostrarDetalles(): void
-    + actualizarStock('int cantidad'): boolean
+    # actualizarStock(cantidad: int): boolean
     }
+
+    class VentaTest {
+    - {static} venta: Venta
+    - {static} cliente: Cliente
+    - {static} productos: List<Producto>
+    
+    + {static} inicializarDatos(): void
+    + {static} crearVentaSimple(): void
+    + {static} crearVentaMultipleProductos(): void
+    + {static} probarVentaSinCliente(): void
+    - {static} generarProductosPrueba(): void
+    # {static} validarVenta(Venta venta): boolean
 
 }
 
 Cliente "0..1" -- "0..*" Venta
-Venta "1" *-- "1..*" ItemVenta : composition
+Venta "1" *-- "1..*" ItemVenta
 ItemVenta "1" -- "1" Producto
 
-
+VentaTest ..> Venta
+VentaTest ..> Cliente
+VentaTest ..> Producto
 
 @enduml
