@@ -61,4 +61,19 @@ public class Venta {
         this.estado = "COMPLETADA";
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Venta{" +
+                "id=" + id +
+                ", idCliente=" + idCliente +
+                ", productosVenta=" + productosVenta +
+                ", subtotal=" + subtotal +
+                ", impuestos=" + impuestos +
+                ", total=" + total +
+                ", fechaCreacion=" + fechaCreacion +
+                ", estado='" + estado + '\'' +
+                '}';
+    }
+    
 }

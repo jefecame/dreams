@@ -31,4 +31,17 @@ public class ProductoVenta {
     public double calcularSubtotal() {
         return this.cantidad * this.precioUnitario;
     }
+
+    @Override
+    public String toString() {
+        return "ProductoVenta{" +
+                "id=" + id +
+                ", idProducto=" + idProducto +
+                ", idVenta=" + idVenta +
+                ", cantidad=" + cantidad +
+                ", precioUnitario=" + precioUnitario +
+                ", subtotal=" + subtotal +
+                '}';
+    }
+    
 }

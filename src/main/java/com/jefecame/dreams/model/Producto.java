@@ -3,16 +3,16 @@ package com.jefecame.dreams.model;
 import java.math.BigDecimal;
 
 public class Producto {
-    private int id;
-    private String nombre;
-    private BigDecimal precio;
-    private String categoria;
-    private int stock;
-    private boolean activo;
+    protected int id;
+    protected String nombre;
+    protected BigDecimal precio;
+    protected String categoria;
+    protected int stock;
+    protected boolean activo;
 
-    public Producto(String nombre, double precio, String categoria, int stock) {
+    public Producto(String nombre, BigDecimal precio, String categoria, int stock) {
         this.nombre = nombre;
-        this.precio = BigDecimal.valueOf(precio);
+        this.precio = precio;
         this.categoria = categoria;
         this.stock = stock;
         this.activo = true;
@@ -38,4 +38,17 @@ public class Producto {
     public boolean validarDisponibilidad(int cantidadRequerida) {
         return this.stock >= cantidadRequerida;
     }
+
+    @Override
+    public String toString() {
+        return "Producto{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", precio=" + precio +
+                ", categoria='" + categoria + '\'' +
+                ", stock=" + stock +
+                ", activo=" + activo +
+                '}';
+    }
+    
 }

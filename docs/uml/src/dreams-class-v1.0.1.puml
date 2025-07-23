@@ -7,47 +7,6 @@
     skinparam backgroundColor transparent
     skinparam linetype ortho
 
-    package dreams.view #888888 {
-
-        '=== Vistas ===
-
-        class Dreams {
-            --
-            + mostrarMenuPrincipal(): void
-        }
-
-        class MenuClientes {
-            --
-            + {static} mostrarMenuClientes(): void
-            + {static} crearCliente(): void
-            + {static} leerCliente(): void
-            + {static} actualizarCliente(): void
-            + {static} eliminarCliente(): void
-            + {static} listarClientes(): void
-        }
-
-        class MenuProductos {
-            --
-            + {static} mostrarMenuProductos(): void
-            + {static} crearProducto(): void
-            + {static} leerProducto(): void
-            + {static} actualizarProducto(): void
-            + {static} eliminarProducto(): void
-            + {static} listarProductos(): void
-        }
-        
-        class MenuVentas {
-            --
-            + {static} mostrarMenuVentas(): void
-            + {static} crearVenta(): void
-            + {static} leerVenta(): void
-            + {static} actualizarVenta(): void
-            + {static} eliminarVenta(): void
-            + {static} listarVentas(): void
-        }
-        
-    }
-
     package dreams.model #999999 {
         
         '=== Modelos ===
@@ -139,8 +98,6 @@
             --
             .. Constructors ..
             + ProductoVenta(idProducto: int, idVenta: int, cantidad: int, precioUnitario: double)
-            .. Setters ..
-            + setCantidad(cantidad: int): void
             .. Getters ..
             + getId(): int
             + getIdProducto(): int <<FK>>
@@ -148,6 +105,8 @@
             + getCantidad(): int
             + getPrecioUnitario(): double
             + getSubtotal(): double
+            .. Setters ..
+            + setCantidad(cantidad: int): void
             .. Controllers ..
             + calcularSubtotal(): double
         }
@@ -155,17 +114,25 @@
         class ProductoElectronica extends Producto {
             -- 
             .. Constructores ..
-            + ProductoElectronica(nombre: String, precio: double, stock: int)
-            .. Métodos específicos ..
-            + garantiaExtendida(): boolean
+            + ProductoElectronica(id: int, nombre: String, precio: BigDecimal, categoria: String, stock: int, activo: boolean, marca: String, modelo: String)
+            .. Getters ..
+            + getMarca(): String
+            + getModelo(): String
+            .. Setters ..
+            + setMarca(marca: String): void
+            + setModelo(modelo: String): void
         }
 
         class ProductoRopa extends Producto {
             -- 
             .. Constructores ..
-            + ProductoRopa(nombre: String, precio: double, stock: int)
-            .. Métodos específicos ..
-            + esLavable(): boolean
+            + ProductoRopa(id: int, nombre: String, precio: BigDecimal, categoria: String, stock: int, activo: boolean, talla: String, color: String)
+            .. Getters ..
+            + getTalla(): String
+            + getColor(): String
+            .. Setters ..
+            + setTalla(talla: String): void
+            + setColor(color: String): void
         }
         
         '=== Enumeraciones ===
@@ -173,6 +140,47 @@
         enum EstadoVenta {
             PROCESANDO
             COMPLETADA
+        }
+        
+    }
+
+    package dreams.view #888888 {
+
+        '=== Vistas ===
+
+        class Dreams {
+            --
+            + mostrarMenuPrincipal(): void
+        }
+
+        class MenuClientes {
+            --
+            + {static} mostrarMenuClientes(): void
+            + {static} crearCliente(): void
+            + {static} leerCliente(): void
+            + {static} actualizarCliente(): void
+            + {static} eliminarCliente(): void
+            + {static} listarClientes(): void
+        }
+
+        class MenuProductos {
+            --
+            + {static} mostrarMenuProductos(): void
+            + {static} crearProducto(): void
+            + {static} leerProducto(): void
+            + {static} actualizarProducto(): void
+            + {static} eliminarProducto(): void
+            + {static} listarProductos(): void
+        }
+        
+        class MenuVentas {
+            --
+            + {static} mostrarMenuVentas(): void
+            + {static} crearVenta(): void
+            + {static} leerVenta(): void
+            + {static} actualizarVenta(): void
+            + {static} eliminarVenta(): void
+            + {static} listarVentas(): void
         }
         
     }
@@ -205,9 +213,12 @@
     ' --- Dependencias ---
 
     ' La clase Prueba depende de las otras clases para realizar sus operaciones, pero no tiene una asociación directa de datos con ellas.
-    Venta <.. Prueba : usa
-    Cliente <.. Prueba : usa
-    Producto <.. Prueba : usa
-    ProductoVenta <.. Prueba : usa
+    Cliente <.. MenuClientes : usa
+    Producto <.. MenuProductos : usa
+    Venta <.. MenuVentas : usa
+
+    ' === Layout ===
+
+    hide dreams.view
 
 @enduml

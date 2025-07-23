@@ -33,4 +33,14 @@ public class Cliente {
         this.email = email;
     }
     
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", email='" + email + '\'' +
+                ", activo=" + activo +
+                '}';
+    }
+    
 }
