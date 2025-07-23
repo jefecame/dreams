@@ -1,4 +1,4 @@
-@startuml Dreams Sales System v1.0.1
+@startuml Dreams Sales System v1.0.2
 
 !theme blueprint
 
@@ -23,7 +23,7 @@ skinparam package {
 }
 
 ' Header with version
-title Dreams Sales System - Database Model v1.0.1\n<size:14><color:gray>Entity-Relationship Focused Design</color></size>
+title Dreams Sales System - Database Model v1.0.2\n<size:14><color:gray>Entity-Relationship Focused Design</color></size>
 
 ' Main application layers
 package "🏪 Dreams Application" #LightSteelBlue {
@@ -38,24 +38,24 @@ package "🏪 Dreams Application" #LightSteelBlue {
             - {field} email: String
             - {field} fechaCreacion: LocalDateTime
             - {field} activo: boolean
-            ==
+            ..
             ' === CONSTRUCTORS ===
             + Cliente(nombre: String, email: String)
             + Cliente(id: UUID, nombre: String, email: String)
-            ==
+            ..
             ' === ACCESSORS ===
             + getId(): UUID
             + getNombre(): String
             + getEmail(): String
             + getFechaCreacion(): LocalDateTime
             + isActivo(): boolean
-            ==
+            ..
             ' === MUTATORS ===
             + setNombre(nombre: String): void
             + setEmail(email: String): void
             + desactivar(): void
             + activar(): void
-            ==
+            ..
             ' === BUSINESS METHODS ===
             + actualizarInformacion(nombre: String, email: String): void
             + validarEmail(): boolean
@@ -72,11 +72,11 @@ package "🏪 Dreams Application" #LightSteelBlue {
             - {field} stockMinimo: Integer
             - {field} activo: boolean
             - {field} fechaCreacion: LocalDateTime
-            ==
+            ..
             ' === CONSTRUCTORS ===
             + Producto(nombre: String, precio: BigDecimal, categoria: CategoriaProducto)
             + Producto(id: Long, nombre: String, precio: BigDecimal, categoria: CategoriaProducto, stock: Integer)
-            ==
+            ..
             ' === ACCESSORS ===
             + getId(): Long
             + getNombre(): String
@@ -85,12 +85,12 @@ package "🏪 Dreams Application" #LightSteelBlue {
             + getStock(): Integer
             + getStockMinimo(): Integer
             + isActivo(): boolean
-            ==
+            ..
             ' === MUTATORS ===
             + setPrecio(precio: BigDecimal): void
             + setStock(stock: Integer): void
             + setStockMinimo(minimo: Integer): void
-            ==
+            ..
             ' === BUSINESS METHODS ===
             + actualizarStock(cantidad: Integer): boolean
             + validarDisponibilidad(cantidadRequerida: Integer): boolean
@@ -111,11 +111,11 @@ package "🏪 Dreams Application" #LightSteelBlue {
             - {field} fechaActualizacion: LocalDateTime
             - {field} estado: EstadoVenta
             - {field} numeroFactura: String
-            ==
+            ..
             ' === CONSTRUCTORS ===
             + Venta(clienteId: UUID)
             + Venta(id: Long, clienteId: UUID, fecha: LocalDateTime)
-            ==
+            ..
             ' === ACCESSORS ===
             + getId(): Long
             + getClienteId(): UUID
