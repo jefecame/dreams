@@ -1,77 +1,86 @@
-@startuml
-
+@startuml Dreams System Model v1.0.1
+    
+    !theme spacelab
+    
+    ' Configuration
     skinparam classAttributeIconSize 0
+    skinparam backgroundColor transparent
+    skinparam linetype ortho
     
-    package dreams.src #DDDDDD {
-    
+    package dreams.src #999999 {
+        
+        '=== Clases ===
+
         class Cliente {
-        '--- Atributos ---
-            - **id**: String <<PK>>
+            - **id**: UUID <<PK>>
             - nombre: String
             - email: String
-        '--- Método Constructor ---
-            + Cliente(id: String, nombre: String, email: String)
-        '--- Métodos Setter ---
+            - activo: boolean
+            --
+            .. Constructors ..
+            + Cliente(id: UUID, nombre: String, email: String)
             .. Setters ..
             + setNombre(nombre: String): void
             + setEmail(email: String): void
-        '--- Métodos Getter ---
+            + setActivo(activo: boolean): void
             .. Getters ..
-            + getId(): String
+            + getId(): UUID
             + getNombre(): String
             + getEmail(): String
-        '--- Métodos Controller ---
+            + getActivo(): boolean
             .. Controllers ..
             + actualizarInformacion(nombre: String, email: String): void
         }
         
         class Producto {
-        '--- Atributos ---
             - **id**: int <<PK>>
             - nombre: String
-            - precio: double
-            - categoria: String
+            - precio: BigDecimal
+            - categoria: CategoriaProducto
             - stock: int
-        '--- Método Constructor ---
-            + Producto(id: int, nombre: String, precio: double, categoria: String, stock: int)
-        '--- Métodos Setter ---
+            - activo: boolean
+            --
+            .. Constructors ..
+            + Producto(nombre: String, precio: double, categoria: String, stock: int)
             .. Setters ..
             + setNombre(nombre: String): void
             + setPrecio(precio: double): void
             + setCategoria(categoria: String): void
             + setStock(stock: int): void
-        '--- Métodos Getter ---
+            + setActivo(activo: boolean): void
             .. Getters ..
             + getId(): int
             + getNombre(): String
             + getPrecio(): double
-            + getCategoria(): String
+            + getCategoria(): CategoriaProducto
             + getStock(): int
-        '--- Métodos Controller ---
+            + getActivo(): boolean
             .. Controllers ..
+            + actualizarStock(cantidad: int): void
+            + validarDisponibilidad(cantidadRequerida: Integer): boolean
         }
         
         class Venta {
-        '--- Atributos ---
             - **id**: int <<PK>>
-            - **idCliente**: String <<FK>>
+            - **idCliente**: UUID <<FK>>
             - productosVenta: List<ProductoVenta>
-            - total: double
-            - fecha: LocalDateTime
-            - estado: String
-        '--- Método Constructor ---
-            + Venta(id: int, idCliente: String, fecha: Date)
-        '--- Métodos Setter ---
-            .. Setters ..
-        '--- Métodos Getter ---
+            - subtotal: BigDecimal
+            - impuestos: BigDecimal
+            - total: BigDecimal
+            - fechaCreacion: LocalDateTime
+            - estado: EstadoVenta
+            --
+            .. Constructors ..
+            + Venta(idCliente: UUID, fecha: LocalDateTime)
             .. Getters ..
             + getId(): int
-            + getIdCliente(): String
+            + getIdCliente(): UUID
             + getProductosVenta(): List<ProductoVenta>
-            + getTotal(): double
-            + getFecha(): LocalDateTime
-            + getEstado(): String
-        '--- Métodos Controller ---
+            + getSubtotal(): BigDecimal
+            + getImpuestos(): BigDecimal
+            + getTotal(): BigDecimal
+            + getFechaCreacion(): LocalDateTime
+            + getEstado(): EstadoVenta
             .. Controllers ..
             + agregarProducto(producto: Producto, cantidad: int ): boolean
             + removerProducto(idProductoVenta: int): boolean
@@ -80,19 +89,17 @@
         }
         
         class ProductoVenta {
-        '--- Atributos ---
             - **id**: int <<PK>>
             - **idProducto**: int <<FK>>
             - **idVenta**: int <<FK>>
             - cantidad: int
             - precioUnitario: double
             - subtotal: double
-        '--- Método Constructor ---
-            + ProductoVenta(id: int, idProducto: int, idVenta: int, cantidad: int, precioUnitario: double)
-        '--- Métodos Setter ---
+            --
+            .. Constructors ..
+            + ProductoVenta(idProducto: int, idVenta: int, cantidad: int, precioUnitario: double)
             .. Setters ..
             + setCantidad(cantidad: int): void
-        '--- Métodos Getter ---
             .. Getters ..
             + getId(): int
             + getIdProducto(): int <<FK>>
@@ -100,36 +107,47 @@
             + getCantidad(): int
             + getPrecioUnitario(): double
             + getSubtotal(): double
-        '--- Métodos Controller ---
             .. Controllers ..
             + calcularSubtotal(): double
+        }
+
+        '=== Enumeraciones ===
+        
+        enum EstadoVenta {
+            PROCESANDO
+            COMPLETADA
+        }
+        
+        enum CategoriaProducto {
+            ELECTRONICA
+            ROPA
+            LIBROS
         }
         
     }
     
-    package dreams.test #AAAAAA {
+    '=== Pruebas ===
+
+    package dreams.test #999999 {
     
         class Prueba {
-        '--- Métodos Crear (Create) ---
-            .. Crear ..
+            --
+            .. Métodos Crear ..
             + {static} probarCrearCliente(): void
             + {static} probarCrearProducto(): void
             + {static} probarCrearVenta(): void
             + {static} probarCrearProductoVenta(): void
-        '--- Métodos Leer (Read) ---
-            .. Leer ..
+            .. Métodos Leer ..
             + {static} probarLeerCliente(): void
             + {static} probarLeerProducto(): void
             + {static} probarLeerVenta(): void
             + {static} probarLeerProductoVenta(): void
-        '--- Métodos Actualizar (Update) ---
-            .. Actualizar ..
+            .. Métodos Actualizar ..
             + {static} probarActualizarCliente(): void
             + {static} probarActualizarProducto(): void
             + {static} probarActualizarVenta(): void
             + {static} probarActualizarProductoVenta(): void
-        '--- Métodos Eliminar (Delete) ---
-            .. Eliminar ..
+            .. Métodos Eliminar ..
             + {static} probarEliminarCliente(): void
             + {static} probarEliminarProducto(): void
             + {static} probarEliminarVenta(): void
@@ -137,25 +155,32 @@
         }
         
     }
+
+    ' === Relaciones Centrales ===
     
-    '--- Relaciones ---
+    ' Un Cliente puede realizar cero o muchas Ventas. Cada Venta es realizada por exactamente un Cliente.
+    Cliente "1" -- "0..*" Venta : realiza
+
+    ' Una Venta se compone de uno o más ProductoVenta. La vida de ProductoVenta depende de la Venta (Composición).
+    Venta "1" *-- "1..*" ProductoVenta : contiene
+
+    ' Cada ProductoVenta se refiere a exactamente un Producto. Un Producto puede estar en múltiples ProductoVenta.
+    ProductoVenta "1" -- "1" Producto : referencia
     
-    ' Cada venta debe tener un cliente asignado.
-    'Cliente "1" -- "0..*" Venta
+    ' === Relaciones de Enumeraciones ===
     
-    ' Una venta podría no tener un cliente asignado.
-    Cliente "0..1" -- "0..*" Venta
+    ' Un Producto pertenece a exactamente una CategoriaProducto. Una CategoriaProducto puede contener cero o muchos Productos.
+    Producto "1" -- "1" CategoriaProducto : pertenece a
+
+    ' Una Venta tiene exactamente un EstadoVenta. Un EstadoVenta puede ser asociado a cero o muchas Ventas.
+    Venta "1" -- "1" EstadoVenta : tiene estado
     
-    ' Una Venta contiene uno o más ProductoVenta y la vida de ProductoVenta depende de la Venta.
-    Venta "1" *-- "1..*" ProductoVenta
-    
-    ' Cada entrada de ProductoVenta se refiere a exactamente un Producto.
-    ProductoVenta "1" -- "1" Producto
-    
-    ' Prueba depende de las otras clases para realizar sus operaciones, pero no tiene una asociación directa.
-    Venta <.. Prueba
-    Cliente <.. Prueba
-    Producto <.. Prueba
-    ProductoVenta <.. Prueba
-    
+    ' === Dependencias de Prueba ===
+
+    ' La clase Prueba depende de las otras clases para realizar sus operaciones, pero no tiene una asociación directa de datos con ellas.
+    Venta <.down. Prueba : usa
+    Cliente <.down. Prueba : usa
+    Producto <.down. Prueba : usa
+    ProductoVenta <.down. Prueba : usa
+
 @enduml
