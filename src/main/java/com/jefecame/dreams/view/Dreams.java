@@ -2,7 +2,10 @@ package com.jefecame.dreams.view;
 
 import java.util.Scanner;
 
-public class MenuPrincipal {
+/**
+ * Clase que representa el menú principal de la aplicación Dreams.
+ */
+public class Dreams {
 
     public void mostrarMenu() {
         Scanner scanner = new Scanner(System.in);
@@ -37,4 +40,6 @@ public class MenuPrincipal {
         } while (opcion != 0);
         scanner.close();
     }
+
+    
 }

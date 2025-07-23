@@ -6,10 +6,24 @@
     skinparam classAttributeIconSize 0
     skinparam backgroundColor transparent
     skinparam linetype ortho
-    
-    package dreams.main #999999 {
+
+    package dreams.view #777777 {
+
+        '=== Vistas ===
+
+        class Dreams {
+            --
+            .. Métodos ..
+            + mostrarMenu(): void
+            + procesarOpcion(opcion: int): void
+            + mostrarMensaje(mensaje: String): void
+        }
         
-        '=== Clases ===
+    }
+
+    package dreams.model #999999 {
+        
+        '=== Modelos ===
 
         class Cliente {
             - **id**: UUID <<PK>>

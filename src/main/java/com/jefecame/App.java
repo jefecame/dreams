@@ -1,18 +1,15 @@
 package com.jefecame;
 
+import com.jefecame.dreams.view.Dreams;
+
 /**
- * Hello world!
- *
+ * Clase principal de la aplicación para iniciar el programa Dreams.
  */
-package com.jefecame;
-
-import com.jefecame.dreams.MenuPrincipal;
-
 public class App 
 {
     public static void main( String[] args )
     {
-        MenuPrincipal menu = new MenuPrincipal();
-        menu.mostrarMenu();
+        Dreams dreams = new Dreams();
+        dreams.mostrarMenu();
     }
 }
