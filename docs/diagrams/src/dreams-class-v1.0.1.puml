@@ -121,7 +121,6 @@
         enum CategoriaProducto {
             ELECTRONICA
             ROPA
-            LIBROS
         }
         
     }
