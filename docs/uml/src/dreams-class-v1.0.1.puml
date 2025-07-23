@@ -60,17 +60,17 @@
             --
             .. Constructors ..
             + Cliente(id: UUID, nombre: String, email: String)
-            .. Setters ..
-            + setNombre(nombre: String): void
-            + setEmail(email: String): void
-            + setActivo(activo: boolean): void
             .. Getters ..
             + getId(): UUID
             + getNombre(): String
             + getEmail(): String
-            + getActivo(): boolean
+            + isActivo(): boolean
+            .. Setters ..
+            + setNombre(nombre: String): void
+            + setEmail(email: String): void
+            + setActivo(activo: boolean): void
             .. Controllers ..
-            + actualizarInformacion(nombre: String, email: String): void
+            + actualizarInformacion(nombre: String, email: String, activo: boolean): void
         }
         
         class Producto {
@@ -83,19 +83,19 @@
             --
             .. Constructors ..
             + Producto(nombre: String, precio: double, categoria: String, stock: int)
-            .. Setters ..
-            + setNombre(nombre: String): void
-            + setPrecio(precio: double): void
-            + setCategoria(categoria: String): void
-            + setStock(stock: int): void
-            + setActivo(activo: boolean): void
             .. Getters ..
             + getId(): int
             + getNombre(): String
             + getPrecio(): double
             + getCategoria(): CategoriaProducto
             + getStock(): int
-            + getActivo(): boolean
+            + isActivo(): boolean
+            .. Setters ..
+            + setNombre(nombre: String): void
+            + setPrecio(precio: double): void
+            + setCategoria(categoria: String): void
+            + setStock(stock: int): void
+            + setActivo(activo: boolean): void
             .. Controllers ..
             + actualizarStock(cantidad: int): void
             + validarDisponibilidad(cantidadRequerida: Integer): boolean
@@ -177,37 +177,6 @@
         
     }
     
-    '=== Pruebas ===
-/'
-    package dreams.test #999999 {
-    
-        class Prueba {
-            --
-            .. Métodos Crear ..
-            + {static} probarCrearCliente(): void
-            + {static} probarCrearProducto(): void
-            + {static} probarCrearVenta(): void
-            + {static} probarCrearProductoVenta(): void
-            .. Métodos Leer ..
-            + {static} probarLeerCliente(): void
-            + {static} probarLeerProducto(): void
-            + {static} probarLeerVenta(): void
-            + {static} probarLeerProductoVenta(): void
-            .. Métodos Actualizar ..
-            + {static} probarActualizarCliente(): void
-            + {static} probarActualizarProducto(): void
-            + {static} probarActualizarVenta(): void
-            + {static} probarActualizarProductoVenta(): void
-            .. Métodos Eliminar ..
-            + {static} probarEliminarCliente(): void
-            + {static} probarEliminarProducto(): void
-            + {static} probarEliminarVenta(): void
-            + {static} probarEliminarProductoVenta(): void
-        }
-        
-    }
-    '/
-
     ' === Relaciones ===
 
     ' --- Asociaciones simples ---
