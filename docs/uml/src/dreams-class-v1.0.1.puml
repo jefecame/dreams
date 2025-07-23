@@ -111,16 +111,27 @@
             + calcularSubtotal(): double
         }
 
+        class ProductoElectronica extends Producto {
+            -- 
+            .. Constructores ..
+            + ProductoElectronica(nombre: String, precio: double, stock: int)
+            .. Métodos específicos ..
+            + garantiaExtendida(): boolean
+        }
+
+        class ProductoRopa extends Producto {
+            -- 
+            .. Constructores ..
+            + ProductoRopa(nombre: String, precio: double, stock: int)
+            .. Métodos específicos ..
+            + esLavable(): boolean
+        }
+        
         '=== Enumeraciones ===
         
         enum EstadoVenta {
             PROCESANDO
             COMPLETADA
-        }
-        
-        enum CategoriaProducto {
-            ELECTRONICA
-            ROPA
         }
         
     }
@@ -155,36 +166,37 @@
         
     }
 
-    ' === Relaciones Centrales ===
-    
+    ' === Relaciones ===
+
+    ' --- Asociaciones simples ---
+
     ' Un Cliente puede realizar cero o muchas Ventas. Cada Venta es realizada por exactamente un Cliente.
     Cliente "1" -- "0..*" Venta : realiza
+
+    ' Cada ProductoVenta se refiere a exactamente un Producto. Un Producto puede estar en múltiples ProductoVenta.
+    ProductoVenta "1" -- "1" Producto : referencia
+
+    ' --- Composiciones ---
 
     ' Una Venta se compone de uno o más ProductoVenta. La vida de ProductoVenta depende de la Venta (Composición).
     Venta "1" *-- "1..*" ProductoVenta : contiene
 
-    ' Cada ProductoVenta se refiere a exactamente un Producto. Un Producto puede estar en múltiples ProductoVenta.
-    ProductoVenta "1" -- "1" Producto : referencia
-    
-    ' === Relaciones de Enumeraciones ===
-    
-    ' Un Producto pertenece a exactamente una CategoriaProducto. Una CategoriaProducto puede contener cero o muchos Productos.
-    Producto "1" -- "1" CategoriaProducto : pertenece a
+    ' --- Herencia ---
+
+    'Producto <|-- ProductoElectronica
+    'Producto <|-- ProductoRopa
+
+    ' --- Enumeraciones ---
 
     ' Una Venta tiene exactamente un EstadoVenta. Un EstadoVenta puede ser asociado a cero o muchas Ventas.
-    Venta "1" -- "1" EstadoVenta : tiene estado
+    Venta "1" -left- "1" EstadoVenta : tiene estado
     
-    ' === Dependencias de Prueba ===
+    ' --- Dependencias ---
 
     ' La clase Prueba depende de las otras clases para realizar sus operaciones, pero no tiene una asociación directa de datos con ellas.
-    Venta <.down. Prueba : usa
-    Cliente <.down. Prueba : usa
-    Producto <.down. Prueba : usa
-    ProductoVenta <.down. Prueba : usa
-
-    ' === LAYOUT OPTIMIZATION ===
-    'Cliente -[hidden]down- Producto
-    'Venta -[hidden]right- ProductoVenta
-    'EstadoVenta -[hidden]up- CategoriaProducto
+    Venta <.. Prueba : usa
+    Cliente <.. Prueba : usa
+    Producto <.. Prueba : usa
+    ProductoVenta <.. Prueba : usa
 
 @enduml

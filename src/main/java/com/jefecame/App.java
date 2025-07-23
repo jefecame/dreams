@@ -4,10 +4,15 @@ package com.jefecame;
  * Hello world!
  *
  */
+package com.jefecame;
+
+import com.jefecame.dreams.MenuPrincipal;
+
 public class App 
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        MenuPrincipal menu = new MenuPrincipal();
+        menu.mostrarMenu();
     }
 }
