@@ -1,11 +1,13 @@
-@startuml Dreams System Model v1.0.1
+@startuml Dreams
     
+    '=== Configuration ===
     !theme spacelab
-    
-    ' Configuration
+
     skinparam classAttributeIconSize 0
     skinparam backgroundColor transparent
     skinparam linetype ortho
+
+    '=== Paquetes ===
 
     package dreams.model #999999 {
         
@@ -208,17 +210,20 @@
     ' --- Enumeraciones ---
 
     ' Una Venta tiene exactamente un EstadoVenta. Un EstadoVenta puede ser asociado a cero o muchas Ventas.
-    Venta "1" -left- "1" EstadoVenta : tiene estado
+    Venta "1" -left- "1" EstadoVenta : está
     
-    ' --- Dependencias ---
+    ' --- Dependencias --- (extends marca la herencia)
+    'Producto <|-- ProductoElectronica
+    'Producto <|-- ProductoRopa
 
-    ' La clase Prueba depende de las otras clases para realizar sus operaciones, pero no tiene una asociación directa de datos con ellas.
-    Cliente <.. MenuClientes : usa
-    Producto <.. MenuProductos : usa
-    Venta <.. MenuVentas : usa
+    ' La clase Prueba depende de las otras clases para realizar sus operaciones, pero no tiene una asociación directa de datos con ellas. (ocultas por layout)
+    'Cliente <.. MenuClientes as DependenciaMenuClientes : usa
+    'Producto <.. MenuProductos as DependenciaMenuProductos : usa
+    'Venta <.. MenuVentas as DependenciaMenuVentas : usa
 
     ' === Layout ===
 
-    hide dreams.view
+    'hide dreams.view
+    hide @unlinked
 
 @enduml
