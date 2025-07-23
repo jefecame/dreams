@@ -2,7 +2,11 @@ package com.jefecame.dreams.model;
 
 import java.util.UUID;
 
+/**
+ * Clase que representa un Cliente en la aplicación Dreams.
+ */
 public class Cliente {
+
     private UUID id;
     private String nombre;
     private String email;
@@ -28,4 +32,5 @@ public class Cliente {
         this.nombre = nombre;
         this.email = email;
     }
+    
 }
