@@ -8,11 +8,9 @@ import java.util.Scanner;
 public class Dreams {
 
     /**
-     * Método principal que inicia la aplicación y muestra el menú.
-     *
-     * @param args Argumentos de línea de comandos (no se utilizan).
+     * Mostrar el menú principal de la aplicación.
      */
-    public void mostrarMenu() {
+    public void mostrarMenuPrincipal() {
         Scanner scanner = new Scanner(System.in);
         int opcion;
         do {
@@ -27,13 +25,13 @@ public class Dreams {
 
             switch (opcion) {
                 case 1:
-                    System.out.println("Funcionalidad de gestión de clientes (por implementar)");
+                    MenuClientes.mostrarMenuClientes(scanner);
                     break;
                 case 2:
-                    System.out.println("Funcionalidad de gestión de productos (por implementar)");
+                    MenuProductos.mostrarMenuProductos(scanner);
                     break;
                 case 3:
-                    System.out.println("Funcionalidad de gestión de ventas (por implementar)");
+                    MenuVentas.mostrarMenuVentas(scanner);
                     break;
                 case 0:
                     System.out.println("Saliendo del sistema...");
@@ -46,7 +44,4 @@ public class Dreams {
         scanner.close();
     }
 
-
-
-    
 }

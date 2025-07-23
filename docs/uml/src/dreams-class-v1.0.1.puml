@@ -14,9 +14,40 @@
         class Dreams {
             --
             .. Métodos ..
-            + mostrarMenu(): void
-            + procesarOpcion(opcion: int): void
-            + mostrarMensaje(mensaje: String): void
+            + mostrarMenuPrincipal(): void
+            + mostrarMenuClientes(): void
+            + mostrarMenuProductos(): void
+            + mostrarMenuVentas(): void
+        }
+
+        class MenuClientes {
+            --
+            .. Métodos ..
+            + mostrarMenuClientes(): void
+            + crearCliente(): void
+            + leerCliente(): void
+            + actualizarCliente(): void
+            + eliminarCliente(): void
+        }
+
+        class MenuProductos {
+            --
+            .. Métodos ..
+            + mostrarMenuProductos(): void
+            + crearProducto(): void
+            + leerProducto(): void
+            + actualizarProducto(): void
+            + eliminarProducto(): void
+        }
+        
+        class MenuVentas {
+            --
+            .. Métodos ..
+            + mostrarMenuVentas(): void
+            + crearVenta(): void
+            + leerVenta(): void
+            + actualizarVenta(): void
+            + eliminarVenta(): void
         }
         
     }
@@ -151,7 +182,7 @@
     }
     
     '=== Pruebas ===
-
+/'
     package dreams.test #999999 {
     
         class Prueba {
@@ -179,6 +210,7 @@
         }
         
     }
+    '/
 
     ' === Relaciones ===
 

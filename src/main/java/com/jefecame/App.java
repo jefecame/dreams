@@ -8,6 +8,6 @@ import com.jefecame.dreams.view.Dreams;
 public class App {
     public static void main( String[] args ) {
         Dreams dreams = new Dreams();
-        dreams.mostrarMenu();
+        dreams.mostrarMenuPrincipal();
     }
 }
