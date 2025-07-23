@@ -1,0 +1,161 @@
+@startuml
+
+    skinparam classAttributeIconSize 0
+    
+    package dreams.src #DDDDDD {
+    
+        class Cliente {
+        '--- Atributos ---
+            - **id**: String <<PK>>
+            - nombre: String
+            - email: String
+        '--- Método Constructor ---
+            + Cliente(id: String, nombre: String, email: String)
+        '--- Métodos Setter ---
+            .. Setters ..
+            + setNombre(nombre: String): void
+            + setEmail(email: String): void
+        '--- Métodos Getter ---
+            .. Getters ..
+            + getId(): String
+            + getNombre(): String
+            + getEmail(): String
+        '--- Métodos Controller ---
+            .. Controllers ..
+            + actualizarInformacion(nombre: String, email: String): void
+        }
+        
+        class Producto {
+        '--- Atributos ---
+            - **id**: int <<PK>>
+            - nombre: String
+            - precio: double
+            - categoria: String
+            - stock: int
+        '--- Método Constructor ---
+            + Producto(id: int, nombre: String, precio: double, categoria: String, stock: int)
+        '--- Métodos Setter ---
+            .. Setters ..
+            + setNombre(nombre: String): void
+            + setPrecio(precio: double): void
+            + setCategoria(categoria: String): void
+            + setStock(stock: int): void
+        '--- Métodos Getter ---
+            .. Getters ..
+            + getId(): int
+            + getNombre(): String
+            + getPrecio(): double
+            + getCategoria(): String
+            + getStock(): int
+        '--- Métodos Controller ---
+            .. Controllers ..
+        }
+        
+        class Venta {
+        '--- Atributos ---
+            - **id**: int <<PK>>
+            - **idCliente**: String <<FK>>
+            - productosVenta: List<ProductoVenta>
+            - total: double
+            - fecha: LocalDateTime
+            - estado: String
+        '--- Método Constructor ---
+            + Venta(id: int, idCliente: String, fecha: Date)
+        '--- Métodos Setter ---
+            .. Setters ..
+        '--- Métodos Getter ---
+            .. Getters ..
+            + getId(): int
+            + getIdCliente(): String
+            + getProductosVenta(): List<ProductoVenta>
+            + getTotal(): double
+            + getFecha(): LocalDateTime
+            + getEstado(): String
+        '--- Métodos Controller ---
+            .. Controllers ..
+            + agregarProducto(producto: Producto, cantidad: int ): boolean
+            + removerProducto(idProductoVenta: int): boolean
+            + calcularTotal(): boolean
+            + finalizarVenta(): boolean
+        }
+        
+        class ProductoVenta {
+        '--- Atributos ---
+            - **id**: int <<PK>>
+            - **idProducto**: int <<FK>>
+            - **idVenta**: int <<FK>>
+            - cantidad: int
+            - precioUnitario: double
+            - subtotal: double
+        '--- Método Constructor ---
+            + ProductoVenta(id: int, idProducto: int, idVenta: int, cantidad: int, precioUnitario: double)
+        '--- Métodos Setter ---
+            .. Setters ..
+            + setCantidad(cantidad: int): void
+        '--- Métodos Getter ---
+            .. Getters ..
+            + getId(): int
+            + getIdProducto(): int <<FK>>
+            + getIdVenta(): int <<FK>>
+            + getCantidad(): int
+            + getPrecioUnitario(): double
+            + getSubtotal(): double
+        '--- Métodos Controller ---
+            .. Controllers ..
+            + calcularSubtotal(): double
+        }
+        
+    }
+    
+    package dreams.test #AAAAAA {
+    
+        class Prueba {
+        '--- Métodos Crear (Create) ---
+            .. Crear ..
+            + {static} probarCrearCliente(): void
+            + {static} probarCrearProducto(): void
+            + {static} probarCrearVenta(): void
+            + {static} probarCrearProductoVenta(): void
+        '--- Métodos Leer (Read) ---
+            .. Leer ..
+            + {static} probarLeerCliente(): void
+            + {static} probarLeerProducto(): void
+            + {static} probarLeerVenta(): void
+            + {static} probarLeerProductoVenta(): void
+        '--- Métodos Actualizar (Update) ---
+            .. Actualizar ..
+            + {static} probarActualizarCliente(): void
+            + {static} probarActualizarProducto(): void
+            + {static} probarActualizarVenta(): void
+            + {static} probarActualizarProductoVenta(): void
+        '--- Métodos Eliminar (Delete) ---
+            .. Eliminar ..
+            + {static} probarEliminarCliente(): void
+            + {static} probarEliminarProducto(): void
+            + {static} probarEliminarVenta(): void
+            + {static} probarEliminarProductoVenta(): void
+        }
+        
+    }
+    
+    '--- Relaciones ---
+    
+    ' Cada venta debe tener un cliente asignado.
+    'Cliente "1" -- "0..*" Venta
+    
+    ' Una venta podría no tener un cliente asignado.
+    Cliente "0..1" -- "0..*" Venta
+    
+    ' Una Venta contiene uno o más ProductoVenta y la vida de ProductoVenta depende de la Venta.
+    Venta "1" *-- "1..*" ProductoVenta
+    
+    ' Cada entrada de ProductoVenta se refiere a exactamente un Producto.
+    ProductoVenta "1" -- "1" Producto
+    
+    ' Prueba depende de las otras clases para realizar sus operaciones, pero no tiene una asociación directa.
+    Venta <.. Prueba
+    Cliente <.. Prueba
+    Producto <.. Prueba
+    ProductoVenta <.. Prueba
+    
+@enduml

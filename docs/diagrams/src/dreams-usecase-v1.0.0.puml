@@ -1,0 +1,225 @@
+@startuml Dreams Sales System - Use Case Diagram
+
+!theme blueprint
+
+' Configuration
+skinparam backgroundColor transparent
+skinparam shadowing false
+skinparam usecase {
+    BackgroundColor #E8F4FD
+    BorderColor #2E86AB
+    FontColor #1F4E79
+}
+
+skinparam actor {
+    BackgroundColor #F24236
+    BorderColor #A23B72
+    FontColor White
+}
+
+title Dreams Sales System - Use Case Overview\n<size:14><color:gray>Actors and System Interactions</color></size>
+
+' === ACTORS ===
+left to right direction
+
+actor "👤\nCustomer" as Customer #LightBlue
+actor "👨‍💼\nSales Agent" as SalesAgent #LightGreen
+actor "🏢\nManager" as Manager #Orange
+actor "👨‍💻\nAdmin" as Admin #LightCoral
+actor "🤖\nSystem" as System #LightGray
+
+' === SYSTEM BOUNDARY ===
+rectangle "Dreams Sales System" {
+    
+    ' === CUSTOMER USE CASES ===
+    package "🛒 Customer Operations" #LightBlue {
+        usecase "Browse Products" as UC1
+        usecase "Search Products" as UC2
+        usecase "View Product Details" as UC3
+        usecase "Add to Cart" as UC4
+        usecase "Update Cart" as UC5
+        usecase "Remove from Cart" as UC6
+        usecase "Checkout" as UC7
+        usecase "Provide Customer Info" as UC8
+        usecase "Make Payment" as UC9
+        usecase "View Order History" as UC10
+        usecase "Download Receipt" as UC11
+    }
+    
+    ' === SALES AGENT USE CASES ===
+    package "💼 Sales Operations" #LightGreen {
+        usecase "Process Walk-in Sale" as UC12
+        usecase "Assist Customer" as UC13
+        usecase "Create Customer Account" as UC14
+        usecase "Apply Discount" as UC15
+        usecase "Handle Returns" as UC16
+        usecase "Generate Sales Report" as UC17
+        usecase "Check Inventory" as UC18
+        usecase "Reserve Products" as UC19
+    }
+    
+    ' === MANAGER USE CASES ===
+    package "📊 Management Operations" #Orange {
+        usecase "Manage Products" as UC20
+        usecase "Update Pricing" as UC21
+        usecase "Manage Categories" as UC22
+        usecase "View Analytics" as UC23
+        usecase "Generate Business Reports" as UC24
+        usecase "Manage Sales Agents" as UC25
+        usecase "Set Discount Policies" as UC26
+        usecase "Monitor Sales Performance" as UC27
+    }
+    
+    ' === ADMIN USE CASES ===
+    package "⚙️ System Administration" #LightCoral {
+        usecase "Manage Users" as UC28
+        usecase "Configure System" as UC29
+        usecase "Backup Data" as UC30
+        usecase "Monitor System Health" as UC31
+        usecase "Manage Permissions" as UC32
+        usecase "Audit Logs" as UC33
+        usecase "System Maintenance" as UC34
+    }
+    
+    ' === SYSTEM USE CASES ===
+    package "🤖 Automated Operations" #LightGray {
+        usecase "Update Stock Levels" as UC35
+        usecase "Calculate Totals" as UC36
+        usecase "Send Notifications" as UC37
+        usecase "Generate Invoices" as UC38
+        usecase "Backup Database" as UC39
+        usecase "Clean Old Data" as UC40
+        usecase "Monitor Low Stock" as UC41
+    }
+}
+
+' === EXTERNAL SYSTEMS ===
+rectangle "External Systems" #LightSteelBlue {
+    usecase "Process Payment" as ExtUC1
+    usecase "Send Email" as ExtUC2
+    usecase "Print Receipt" as ExtUC3
+    usecase "Tax Calculation" as ExtUC4
+}
+
+' === CUSTOMER RELATIONSHIPS ===
+Customer --> UC1
+Customer --> UC2
+Customer --> UC3
+Customer --> UC4
+Customer --> UC5
+Customer --> UC6
+Customer --> UC7
+Customer --> UC8
+Customer --> UC9
+Customer --> UC10
+Customer --> UC11
+
+' === SALES AGENT RELATIONSHIPS ===
+SalesAgent --> UC12
+SalesAgent --> UC13
+SalesAgent --> UC14
+SalesAgent --> UC15
+SalesAgent --> UC16
+SalesAgent --> UC17
+SalesAgent --> UC18
+SalesAgent --> UC19
+SalesAgent --> UC4 : "On behalf of customer"
+SalesAgent --> UC7 : "Assist with checkout"
+
+' === MANAGER RELATIONSHIPS ===
+Manager --> UC20
+Manager --> UC21
+Manager --> UC22
+Manager --> UC23
+Manager --> UC24
+Manager --> UC25
+Manager --> UC26
+Manager --> UC27
+Manager --> UC17 : "Advanced reports"
+
+' === ADMIN RELATIONSHIPS ===
+Admin --> UC28
+Admin --> UC29
+Admin --> UC30
+Admin --> UC31
+Admin --> UC32
+Admin --> UC33
+Admin --> UC34
+
+' === SYSTEM RELATIONSHIPS ===
+System --> UC35
+System --> UC36
+System --> UC37
+System --> UC38
+System --> UC39
+System --> UC40
+System --> UC41
+
+' === USE CASE RELATIONSHIPS ===
+
+' Include relationships
+UC7 .> UC8 : <<include>>
+UC7 .> UC9 : <<include>>
+UC9 .> UC36 : <<include>>
+UC12 .> UC36 : <<include>>
+UC16 .> UC35 : <<include>>
+UC20 .> UC35 : <<include>>
+
+' Extend relationships  
+UC4 <. UC15 : <<extend>>
+UC7 <. UC19 : <<extend>>
+UC24 <. UC27 : <<extend>>
+
+' External system relationships
+UC9 --> ExtUC1
+UC11 --> ExtUC3
+UC37 --> ExtUC2
+UC36 --> ExtUC4
+
+' === NOTES ===
+note top of Customer
+    **Primary Users**
+    End customers who browse
+    and purchase products
+    through various channels
+end note
+
+note right of SalesAgent
+    **Support Staff**
+    Help customers with
+    purchases, handle
+    complex transactions
+end note
+
+note bottom of Manager  
+    **Business Operations**
+    Oversee product catalog,
+    pricing, and business
+    performance
+end note
+
+note left of Admin
+    **Technical Support**
+    System configuration,
+    user management,
+    and maintenance
+end note
+
+note as SystemNote
+    **Automated Processes**
+    Background tasks that run
+    without user intervention
+    to maintain system integrity
+end note
+SystemNote .. System
+
+note as ExtNote
+    **Integration Points**
+    External services for
+    payments, communications,
+    and specialized functions
+end note
+ExtNote .. ExtUC1
+ExtNote .. ExtUC2
+
+@enduml
