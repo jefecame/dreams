@@ -7,6 +7,11 @@ import java.util.Scanner;
  */
 public class Dreams {
 
+    /**
+     * Método principal que inicia la aplicación y muestra el menú.
+     *
+     * @param args Argumentos de línea de comandos (no se utilizan).
+     */
     public void mostrarMenu() {
         Scanner scanner = new Scanner(System.in);
         int opcion;
@@ -40,6 +45,8 @@ public class Dreams {
         } while (opcion != 0);
         scanner.close();
     }
+
+
 
     
 }
