@@ -7,7 +7,7 @@
     skinparam backgroundColor transparent
     skinparam linetype ortho
     
-    package dreams.src #999999 {
+    package dreams.main #999999 {
         
         '=== Clases ===
 
@@ -181,5 +181,10 @@
     Cliente <.down. Prueba : usa
     Producto <.down. Prueba : usa
     ProductoVenta <.down. Prueba : usa
+
+    ' === LAYOUT OPTIMIZATION ===
+    'Cliente -[hidden]down- Producto
+    'Venta -[hidden]right- ProductoVenta
+    'EstadoVenta -[hidden]up- CategoriaProducto
 
 @enduml
