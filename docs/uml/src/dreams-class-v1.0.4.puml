@@ -35,12 +35,12 @@
         }
         
         class Producto {
-            - **id**: int <<PK>>
-            - nombre: String
-            - precio: BigDecimal
-            - categoria: CategoriaProducto
-            - stock: int
-            - activo: boolean
+            # **id**: int <<PK>>
+            # nombre: String
+            # precio: BigDecimal
+            # categoria: CategoriaProducto
+            # stock: int
+            # activo: boolean
             --
             .. Constructors ..
             + Producto(nombre: String, precio: double, categoria: String, stock: int)
@@ -114,7 +114,7 @@
         }
 
         class ProductoElectronica extends Producto {
-            -- 
+            --
             .. Constructores ..
             + ProductoElectronica(id: int, nombre: String, precio: BigDecimal, categoria: String, stock: int, activo: boolean, marca: String, modelo: String)
             .. Getters ..
@@ -126,7 +126,7 @@
         }
 
         class ProductoRopa extends Producto {
-            -- 
+            --
             .. Constructores ..
             + ProductoRopa(id: int, nombre: String, precio: BigDecimal, categoria: String, stock: int, activo: boolean, talla: String, color: String)
             .. Getters ..
