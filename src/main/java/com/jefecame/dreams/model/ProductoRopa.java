@@ -30,11 +30,14 @@ public class ProductoRopa extends Producto {
     }
 
     @Override
-    public String toString() {
+    public String mostrarDetalles() {
         return "ProductoRopa{" +
-                "id='" + getId() + '\'' +
+                "id=" + getId() +
                 ", nombre='" + getNombre() + '\'' +
                 ", precio=" + getPrecio() +
+                ", categoria='" + getCategoria() + '\'' +
+                ", stock=" + getStock() +
+                ", activo=" + isActivo() +
                 ", talla='" + talla + '\'' +
                 ", color='" + color + '\'' +
                 '}';
