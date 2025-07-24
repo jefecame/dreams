@@ -223,7 +223,6 @@
 
     ' === Layout ===
 
-    'hide dreams.view
     hide @unlinked
 
 @enduml
