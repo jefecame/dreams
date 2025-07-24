@@ -2,53 +2,44 @@ package com.jefecame.dreams.model;
 
 import java.math.BigDecimal;
 
-public class Producto {
+/**
+ * Clase abstracta Producto: Base para todos los artículos.
+ * Demuestra Abstracción y es la base para la Herencia.
+ */
+abstract class Producto {
+    private static int contadorId = 0;
     protected int id;
     protected String nombre;
-    protected BigDecimal precio;
-    protected String categoria;
+    protected double precio;
     protected int stock;
-    protected boolean activo;
 
-    public Producto(String nombre, BigDecimal precio, String categoria, int stock) {
+    public Producto(String nombre, double precio, int stock) {
+        this.id = ++contadorId;
         this.nombre = nombre;
         this.precio = precio;
-        this.categoria = categoria;
         this.stock = stock;
-        this.activo = true;
     }
 
+    // Getters
     public int getId() { return id; }
     public String getNombre() { return nombre; }
-    public double getPrecio() { return precio.doubleValue(); }
-    public String getCategoria() { return categoria; }
+    public double getPrecio() { return precio; }
     public int getStock() { return stock; }
-    public boolean getActivo() { return activo; }
 
-    public void setNombre(String nombre) { this.nombre = nombre; }
-    public void setPrecio(double precio) { this.precio = BigDecimal.valueOf(precio); }
-    public void setCategoria(String categoria) { this.categoria = categoria; }
-    public void setStock(int stock) { this.stock = stock; }
-    public void setActivo(boolean activo) { this.activo = activo; }
-
+    /**
+     * Actualiza el stock. Positivo para añadir, negativo para reducir.
+     */
     public void actualizarStock(int cantidad) {
         this.stock += cantidad;
     }
 
+    /**
+     * Valida si hay suficiente stock para una cantidad requerida.
+     */
     public boolean validarDisponibilidad(int cantidadRequerida) {
         return this.stock >= cantidadRequerida;
     }
-
-    @Override
-    public String toString() {
-        return "Producto{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", precio=" + precio +
-                ", categoria='" + categoria + '\'' +
-                ", stock=" + stock +
-                ", activo=" + activo +
-                '}';
-    }
     
+    // Método abstracto para ser implementado por las subclases (Polimorfismo)
+    public abstract String mostrarDetalles();
 }
