@@ -20,9 +20,20 @@ class Cliente {
     }
 
     // Getters para acceso controlado a los datos
-    public UUID getId() { return id; }
-    public String getNombre() { return nombre; }
-    public String getEmail() { return email; }
+    public UUID getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    public boolean isActivo() {
+        return activo;
+    }
 
     /**
      * Método para actualizar la información del cliente.

@@ -10,10 +10,10 @@ abstract class Producto {
     private static int contadorId = 0;
     protected int id;
     protected String nombre;
-    protected double precio;
+    protected BigDecimal precio;
     protected int stock;
 
-    public Producto(String nombre, double precio, int stock) {
+    public Producto(String nombre, BigDecimal precio, int stock) {
         this.id = ++contadorId;
         this.nombre = nombre;
         this.precio = precio;
@@ -23,7 +23,7 @@ abstract class Producto {
     // Getters
     public int getId() { return id; }
     public String getNombre() { return nombre; }
-    public double getPrecio() { return precio; }
+    public BigDecimal getPrecio() { return precio; }
     public int getStock() { return stock; }
 
     /**

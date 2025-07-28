@@ -1,4 +1,4 @@
-package dreams.model;
+package com.jefecame.dreams.model;
 
 import java.math.BigDecimal;
 
