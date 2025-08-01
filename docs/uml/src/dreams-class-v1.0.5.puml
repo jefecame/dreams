@@ -1,0 +1,161 @@
+@startuml dreams
+
+    '=== Estilos ===
+
+    '!theme spacelab
+
+    skinparam classAttributeIconSize 0
+    skinparam linetype ortho
+
+    '=== Título ===
+
+    title Programa de Tienda Departamental "Dreams"
+
+    '=== Encabezado ===
+
+    center header <color:#888888>Ing. Jesús Fernando Carrasco Mendoza</color>
+
+    '=== Paquetes ===
+    
+    package dreams.view #888888 {
+
+        '=== Vistas ===
+
+        +class Dreams {
+            --
+            .. Constructores ..
+            + Dreams()
+            .. Controladores Clientes ..
+            + crearCliente(Cliente cliente): void
+            + eliminarCliente(String idCliente): void
+            + buscarCliente(String idCliente): Cliente
+            .. Controladores Productos ..
+            + crearProducto(Producto producto): void
+            + eliminarProducto(String idProducto): void
+            + buscarProducto(String idProducto): Producto
+            .. Controladores Ventas ..
+            + crearVenta(Venta venta): void
+            + listarVentas(): void
+        }
+
+    }
+
+    package dreams.model #999999 {
+
+        '=== Modelos ===
+
+        +class Cliente {
+            - **idCliente**: int
+            - nombre: String
+            - email: String
+            - activo: boolean
+            --
+            .. Constructores ..
+            + Cliente(idCliente: int, nombre: String, email: String, activo: boolean)
+            .. Getters ..
+            + getIdCliente(): int
+            + getNombre(): String
+            + getEmail(): String
+            + isActivo(): boolean
+            .. Setters ..
+            + setNombre(nombre: String): void
+            + setEmail(email: String): void
+            + setActivo(activo: boolean): void
+            .. Controladores ..
+            + actualizarInformacionPorId(id: int, nombre: String, email: String): void
+            + mostrarInformacionPorId(id: int): void
+            
+        }
+
+        +class Venta {
+            - **idVenta**: int
+            - **cliente**: Cliente
+            - productosVenta: List<Producto>
+            - cantidadesVenta: Map<Producto, int>
+            - total: BigDecimal
+            - fechaCreacion: LocalDateTime
+            - estadoVenta: EstadoVenta
+            --
+            .. Constructors ..
+            + Venta(idVenta: int, cliente: Cliente, fecha: LocalDateTime)
+            .. Getters ..
+            + getIdVenta(): int
+            + getIdCliente(): int
+            + getProductosVenta(): List<Producto>
+            + getCantidadesVenta(): Map<Producto, int>
+            + getTotal(): BigDecimal
+            + getFechaCreacion(): LocalDateTime
+            + getEstadoVenta(): EstadoVenta
+            .. Controllers ..
+            + agregarProducto(producto: Producto, cantidad: int): void
+            + calcularTotal(): BigDecimal
+            + finalizarVenta(): void
+        }
+
+      
+        +class Producto {
+            - **idProducto**: int
+            - nombre: String
+            - precio: BigDecimal
+            - categoria: CategoriaProducto
+            - stock: int
+            - activo: boolean
+            --
+            .. Constructores ..
+            + Producto(idProducto: int, nombre: String, precio: double, categoria: String, stock: int)
+            .. Getters ..
+            + getIdProducto(): int
+            + getNombre(): String
+            + getPrecio(): BigDecimal
+            + getCategoria(): CategoriaProducto
+            + getStock(): int
+            + isActivo(): boolean
+            .. Setters ..
+            + setNombre(nombre: String): void
+            + setPrecio(precio: double): void
+            + setCategoria(categoria: String): void
+            + setStock(stock: int): void
+            + setActivo(activo: boolean): void
+            .. Controllers ..
+            + actualizarStock(cantidad: int): void
+            + validarDisponibilidad(cantidadRequerida: Integer): void
+        }
+
+        '=== Enumeraciones ===
+        
+        enum CategoriaProducto {
+            ELECTRONICO
+            ROPA
+        }
+        
+        enum EstadoVenta {
+            CANCELADA
+            PROCESANDO
+            FINALIZADA
+        }
+
+    }
+
+    ' === Relaciones ===
+    
+    ' --- Vista ---
+    
+    Dreams "1" o-- "0..*" Cliente
+    Dreams "1" o-- "0..*" Producto
+    Dreams "1" *-- "0..*" Venta
+    
+    ' --- Modelos ---
+
+    Venta "1" o-- "1*" Cliente : realizada por
+    Venta "1" o-- "1..*" Producto : contiene
+
+     ' --- Enumeraciones ---
+
+    Venta "1" *-left- "1" EstadoVenta : está
+    Producto "1" *-left- "1" CategoriaProducto : es
+ 
+    ' === Layout ===
+
+    hide @unlinked
+
+@enduml
