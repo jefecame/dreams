@@ -4,10 +4,28 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.jefecame</groupId>
-  <artifactId>dreams</artifactId>
-  <version>1.0.0</version>
+    <groupId>com.jefecame</groupId>
+    <artifactId>dreams</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- Force consistent SLF4J version -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>2.0.9</version>
+            </dependency>
+            
+            <!-- Force consistent Byte Buddy version -->
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>1.14.6</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
   <name>dreams</name>
   <description>Dreams - Sales Management System</description>
   <url>https://github.com/jefecame/dreams</url>
