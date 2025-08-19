@@ -1,223 +1,207 @@
-@startuml dreams 
- 
-    '=== Estilos === 
- 
-    !theme spacelab 
- 
-    skinparam classAttributeIconSize 0 
-    skinparam linetype ortho 
- 
-    '=== Título === 
- 
-    title Programa de Tienda Departamental "Dreams" 
- 
-    '=== Encabezado === 
- 
-    center header <color:#888888>Ing. Jesús Fernando Carrasco Mendoza</color> 
- 
-    '=== Paquetes === 
- 
-    package dreams.model #999999 { 
- 
-        '=== Modelos === 
+@startuml dreams
 
-        class Tienda {
-            - **id**: int <<PK>>
-            - nombre: String
-            - ubicacion: String
-            - telefono: String
-            -- 
-            .. Constructores ..
-            + Tienda(id: int, nombre: String, ubicacion: String, telefono: String)
-            .. Getters ..
-            + getId(): int
-            + getNombre(): String
-            + getUbicacion(): String
-            + getTelefono(): String
-        }
+'=== Estilos ===
+!theme spacelab
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
 
-        class Cliente {
-            - **id**: int <<PK>>
-            - nombre: String
-            - email: String
-            - activo: boolean 
-            -- 
-            .. Constructores .. 
-            + Cliente(id: int, nombre: String, email: String) 
-            .. Getters .. 
-            + getId(): int 
-            + getNombre(): String 
-            + getEmail(): String 
-            + isActivo(): boolean 
-            .. Setters .. 
-            + setNombre(nombre: String): void 
-            + setEmail(email: String): void 
-            + setActivo(activo: boolean): void 
-            .. Controladores .. 
-            + actualizarInformacion(nombre: String, email: String, activo: boolean): void 
-        } 
- 
-        abstract class Producto { 
-            # **id**: int <<PK>> 
-            # nombre: String 
-            # precio: BigDecimal 
-            # categoria: String
-            # stock: int 
-            # activo: boolean 
-            -- 
-            .. Constructores .. 
-            + Producto(nombre: String, precio: BigDecimal, categoria: String, stock: int) 
-            .. Getters .. 
-            + getId(): int 
-            + getNombre(): String 
-            + getPrecio(): BigDecimal 
-            + getCategoria(): String 
-            + getStock(): int 
-            + isActivo(): boolean 
-            .. Setters .. 
-            + setNombre(nombre: String): void 
-            + setPrecio(precio: BigDecimal): void 
-            + setCategoria(categoria: String): void 
-            + setStock(stock: int): void 
-            + setActivo(activo: boolean): void 
-            .. Controllers .. 
-            + actualizarStock(cantidad: int): void 
-            + validarDisponibilidad(cantidadRequerida: Integer): boolean 
-            + {abstract} mostrarDetalles(): String 
-        }
- 
-        class Venta { 
-            - **id**: int <<PK>> 
-            - **idCliente**: int <<FK>> 
-            - productosVenta: List<ProductoVenta> 
-            - subtotal: BigDecimal 
-            - impuestos: BigDecimal 
-            - total: BigDecimal 
-            - fechaCreacion: LocalDateTime 
-            - estado: EstadoVenta 
-            -- 
-            .. Constructors .. 
-            + Venta(idCliente: int, fecha: LocalDateTime) 
-            .. Getters .. 
-            + getId(): int 
-            + getIdCliente(): int 
-            + getProductosVenta(): List<ProductoVenta> 
-            + getSubtotal(): BigDecimal 
-            + getImpuestos(): BigDecimal 
-            + getTotal(): BigDecimal 
-            + getFechaCreacion(): LocalDateTime 
-            + getEstado(): EstadoVenta 
-            .. Controllers .. 
-            + agregarProducto(producto: Producto, cantidad: int): boolean 
-            + removerProducto(idProductoVenta: int): boolean 
-            + calcularTotal(): boolean 
-            + finalizarVenta(): boolean 
-        } 
- 
-        class ProductoVenta { 
-            - **id**: int <<PK>> 
-            - **idProducto**: int <<FK>> 
-            - **idVenta**: int <<FK>> 
-            - cantidad: int 
-            - precioUnitario: BigDecimal 
-            - subtotal: BigDecimal 
-            -- 
-            .. Constructors .. 
-            + ProductoVenta(idProducto: int, idVenta: int, cantidad: int, precioUnitario: double)
-            .. Getters .. 
-            + getId(): int 
-            + getIdProducto(): int 
-            + getIdVenta(): int 
-            + getCantidad(): int 
-            + getPrecioUnitario(): BigDecimal 
-            + getSubtotal(): BigDecimal 
-            .. Setters .. 
-            + setCantidad(cantidad: int): void 
-            .. Controllers .. 
-            + calcularSubtotal(): BigDecimal 
-        } 
- 
-        class ProductoElectronica extends Producto {
-            - marca: String
-            - modelo: String
-            -- 
-            .. Constructores .. 
-            + ProductoElectronica(id: int, nombre: String, precio: BigDecimal, categoria: String, stock: int, activo: boolean, marca: String, modelo: String)
-            .. Getters .. 
-            + getMarca(): String 
-            + getModelo(): String 
-            .. Setters .. 
-            + setMarca(marca: String): void 
-            + setModelo(modelo: String): void 
-            .. Controllers .. 
-            + mostrarDetalles(): String <<override>> 
-        }
- 
-        class ProductoRopa extends Producto {
-            - talla: String
-            - color: String
-            -- 
-            .. Constructores .. 
-            + ProductoRopa(id: int, nombre: String, precio: BigDecimal, categoria: String, stock: int, activo: boolean, talla: String, color: String) 
-            .. Getters .. 
-            + getTalla(): String 
-            + getColor(): String 
-            .. Setters .. 
-            + setTalla(talla: String): void 
-            + setColor(color: String): void 
-            .. Controllers .. 
-            + mostrarDetalles(): String <<override>> 
-        } 
- 
-        '=== Enumeraciones === 
- 
-        enum EstadoVenta {
-            PROCESANDO
-            COMPLETADA
-        } 
-        
-    } 
- 
-    package dreams #888888 {
- 
-        class App {
-            -- 
-            + {static} main(): void
-        }
- 
+'=== Título ===
+title Programa de Tienda Departamental "Dreams"
+
+'=== Encabezado ===
+header <color:#888888>Ing. Jesús Fernando Carrasco Mendoza</color>
+
+'=== Paquetes ===
+package dreams.model #999999 {
+
+    '=== Modelos ===
+    class Tienda {
+        - **id**: int <<PK>>
+        - nombre: String
+        - ubicacion: String
+        - telefono: String
+        --
+        .. Constructores ..
+        + Tienda(id: int, nombre: String, ubicacion: String, telefono: String)
+        .. Getters ..
+        + getId(): int
+        + getNombre(): String
+        + getUbicacion(): String
+        + getTelefono(): String
     }
- 
-    ' === Relaciones ===
- 
-    ' --- Agregaciones ---
- 
-    Cliente "1" -- "0..*" Venta : realiza
-    ProductoVenta "1" -- "1" Producto : referencia
- 
-    ' --- Composiciones --- 
- 
-    Venta "1" *-- "1..*" ProductoVenta : contiene
 
+    class Cliente {
+        - **id**: int <<PK>>
+        - nombre: String
+        - email: String
+        - activo: boolean
+        --
+        .. Constructores ..
+        + Cliente(id: int, nombre: String, email: String)
+        .. Getters ..
+        + getId(): int
+        + getNombre(): String
+        + getEmail(): String
+        + isActivo(): boolean
+        .. Setters ..
+        + setNombre(nombre: String): void
+        + setEmail(email: String): void
+        + setActivo(activo: boolean): void
+        .. Controladores ..
+        + actualizarInformacion(nombre: String, email: String, activo: boolean): void
+    }
 
-    
- 
-    ' --- Herencia (Dependencia) --- (Not needed because "extends" on class Producto define inheritance)
+    abstract class Producto {
+        # **id**: int <<PK>>
+        # nombre: String
+        # precio: BigDecimal
+        # categoria: String
+        # stock: int
+        # activo: boolean
+        --
+        .. Constructores ..
+        + Producto(nombre: String, precio: BigDecimal, categoria: String, stock: int)
+        .. Getters ..
+        + getId(): int
+        + getNombre(): String
+        + getPrecio(): BigDecimal
+        + getCategoria(): String
+        + getStock(): int
+        + isActivo(): boolean
+        .. Setters ..
+        + setNombre(nombre: String): void
+        + setPrecio(precio: BigDecimal): void
+        + setCategoria(categoria: String): void
+        + setStock(stock: int): void
+        + setActivo(activo: boolean): void
+        .. Controladores ..
+        + actualizarStock(cantidad: int): void
+        + validarDisponibilidad(cantidadRequerida: Integer): boolean
+        + {abstract} mostrarDetalles(): String
+    }
 
-    Producto <|-- ProductoElectronica : extiende
-    Producto <|-- ProductoRopa : extiende
- 
-    ' --- Vistas --- Las vistas depende de las otras clases para realizar sus operaciones, pero no tiene una asociación directa de datos con ellas. (ocultas por layout) 
- 
-    Dreams "1" <-- "0..*" Clientes : atiende
-    Dreams "1" <-- "0..*" Productos : tiene
-    Dreams "1" <-- "0..*" Ventas : realiza
- 
-    ' --- Enumeraciones --- 
- 
-    Venta --  EstadoVenta : está
- 
-    ' === Layout === 
- 
-    hide @unlinked 
- 
-@enduml 
+    class Venta {
+        - **id**: int <<PK>>
+        - **idCliente**: int <<FK>>
+        - productosVenta: List<ProductoVenta>
+        - subtotal: BigDecimal
+        - impuestos: BigDecimal
+        - total: BigDecimal
+        - fechaCreacion: LocalDateTime
+        - estado: EstadoVenta
+        --
+        .. Constructores ..
+        + Venta(idCliente: int, fecha: LocalDateTime)
+        .. Getters ..
+        + getId(): int
+        + getIdCliente(): int
+        + getProductosVenta(): List<ProductoVenta>
+        + getSubtotal(): BigDecimal
+        + getImpuestos(): BigDecimal
+        + getTotal(): BigDecimal
+        + getFechaCreacion(): LocalDateTime
+        + getEstado(): EstadoVenta
+        .. Controladores ..
+        + agregarProducto(producto: Producto, cantidad: int): boolean
+        + removerProducto(idProductoVenta: int): boolean
+        + calcularTotal(): boolean
+        + finalizarVenta(): boolean
+    }
+
+    class ProductoVenta {
+        - **id**: int <<PK>>
+        - **idProducto**: int <<FK>>
+        - **idVenta**: int <<FK>>
+        - cantidad: int
+        - precioUnitario: BigDecimal
+        - subtotal: BigDecimal
+        --
+        .. Constructores ..
+        + ProductoVenta(idProducto: int, idVenta: int, cantidad: int, precioUnitario: BigDecimal)
+        .. Getters ..
+        + getId(): int
+        + getIdProducto(): int
+        + getIdVenta(): int
+        + getCantidad(): int
+        + getPrecioUnitario(): BigDecimal
+        + getSubtotal(): BigDecimal
+        .. Setters ..
+        + setCantidad(cantidad: int): void
+        .. Controladores ..
+        + calcularSubtotal(): BigDecimal
+    }
+
+    class ProductoElectronica extends Producto {
+        - marca: String
+        - modelo: String
+        --
+        .. Constructores ..
+        + ProductoElectronica(nombre: String, precio: BigDecimal, categoria: String, stock: int, marca: String, modelo: String)
+        .. Getters ..
+        + getMarca(): String
+        + getModelo(): String
+        .. Setters ..
+        + setMarca(marca: String): void
+        + setModelo(modelo: String): void
+        .. Controladores ..
+        + mostrarDetalles(): String <<override>>
+    }
+
+    class ProductoRopa extends Producto {
+        - talla: String
+        - color: String
+        --
+        .. Constructores ..
+        + ProductoRopa(nombre: String, precio: BigDecimal, categoria: String, stock: int, talla: String, color: String)
+        .. Getters ..
+        + getTalla(): String
+        + getColor(): String
+        .. Setters ..
+        + setTalla(talla: String): void
+        + setColor(color: String): void
+        .. Controladores ..
+        + mostrarDetalles(): String <<override>>
+    }
+
+    '=== Enumeraciones ===
+    enum EstadoVenta {
+        PROCESANDO
+        COMPLETADA
+    }
+
+}
+
+package dreams #888888 {
+
+    class App {
+        --
+        + {static} main(): void
+    }
+
+}
+
+' === Relaciones ===
+
+' --- Asociación ---
+Tienda "1" -- "0..*" Cliente : atiende
+Cliente "1" -- "0..*" Venta : realiza
+ProductoVenta "0..*" -- "1" Producto : se refiere a
+
+' --- Agregación ---
+Venta "1" o-- "0..*" ProductoVenta : contiene
+Tienda "1" o-- "0..*" Producto : vende
+
+' --- Composición ---
+Tienda "1" *-- "0..*" Venta : registra
+
+' --- Herencia ---
+Producto <|-- ProductoElectronica : extiende
+Producto <|-- ProductoRopa : extiende
+
+' --- Dependencia ---
+Venta ..> EstadoVenta : está
+
+' === Layout ===
+hide @unlinked
+
+@enduml
