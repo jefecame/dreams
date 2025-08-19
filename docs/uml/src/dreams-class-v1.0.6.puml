@@ -1,0 +1,240 @@
+@startuml dreams 
+ 
+    '=== Estilos === 
+ 
+    !theme spacelab 
+ 
+    skinparam classAttributeIconSize 0 
+    skinparam linetype ortho 
+ 
+    '=== Título === 
+ 
+    title Programa de Tienda Departamental "Dreams" 
+ 
+    '=== Encabezado === 
+ 
+    center header <color:#888888>Ing. Jesús Fernando Carrasco Mendoza</color> 
+ 
+    '=== Paquetes === 
+ 
+    package dreams.model #999999 { 
+ 
+        '=== Modelos === 
+ 
+        +class Cliente { 
+            - **id**: int <<PK>> 
+            - nombre: String 
+            - email: String 
+            - activo: boolean 
+            -- 
+            .. Constructores .. 
+            + Cliente(id: int, nombre: String, email: String) 
+            .. Getters .. 
+            + getId(): int 
+            + getNombre(): String 
+            + getEmail(): String 
+            + isActivo(): boolean 
+            .. Setters .. 
+            + setNombre(nombre: String): void 
+            + setEmail(email: String): void 
+            + setActivo(activo: boolean): void 
+            .. Controladores .. 
+            + actualizarInformacion(nombre: String, email: String, activo: boolean): void 
+        } 
+ 
+        +class Producto { 
+            # **id**: int <<PK>> 
+            # nombre: String 
+            # precio: BigDecimal 
+            # categoria: CategoriaProducto 
+            # stock: int 
+            # activo: boolean 
+            -- 
+            .. Constructores .. 
+            + Producto(nombre: String, precio: double, categoria: String, stock: int) 
+            .. Getters .. 
+            + getId(): int 
+            + getNombre(): String 
+            + getPrecio(): double 
+            + getCategoria(): CategoriaProducto 
+            + getStock(): int 
+            + isActivo(): boolean 
+            .. Setters .. 
+            + setNombre(nombre: String): void 
+            + setPrecio(precio: double): void 
+            + setCategoria(categoria: String): void 
+            + setStock(stock: int): void 
+            + setActivo(activo: boolean): void 
+            .. Controllers .. 
+            + actualizarStock(cantidad: int): void 
+            + validarDisponibilidad(cantidadRequerida: Integer): boolean 
+            + {abstract} mostrarDetalles(): String 
+        } 
+ 
+        +class Venta { 
+            - **id**: int <<PK>> 
+            - **idCliente**: int <<FK>> 
+            - productosVenta: List<ProductoVenta> 
+            - subtotal: BigDecimal 
+            - impuestos: BigDecimal 
+            - total: BigDecimal 
+            - fechaCreacion: LocalDateTime 
+            - estado: EstadoVenta 
+            -- 
+            .. Constructors .. 
+            + Venta(idCliente: int, fecha: LocalDateTime) 
+            .. Getters .. 
+            + getId(): int 
+            + getIdCliente(): int 
+            + getProductosVenta(): List<ProductoVenta> 
+            + getSubtotal(): BigDecimal 
+            + getImpuestos(): BigDecimal 
+            + getTotal(): BigDecimal 
+            + getFechaCreacion(): LocalDateTime 
+            + getEstado(): EstadoVenta 
+            .. Controllers .. 
+            + agregarProducto(producto: Producto, cantidad: int): boolean 
+            + removerProducto(idProductoVenta: int): boolean 
+            + calcularTotal(): boolean 
+            + finalizarVenta(): boolean 
+        } 
+ 
+        +class ProductoVenta { 
+            - **id**: int <<PK>> 
+            - **idProducto**: int <<FK>> 
+            - **idVenta**: int <<FK>> 
+            - cantidad: int 
+            - precioUnitario: double 
+            - subtotal: double 
+            -- 
+            .. Constructors .. 
+            + ProductoVenta(idProducto: int, idVenta: int, cantidad: int, precioUnitario: double) 
+            .. Getters .. 
+            + getId(): int 
+            + getIdProducto(): int 
+            + getIdVenta(): int 
+            + getCantidad(): int 
+            + getPrecioUnitario(): double 
+            + getSubtotal(): double 
+            .. Setters .. 
+            + setCantidad(cantidad: int): void 
+            .. Controllers .. 
+            + calcularSubtotal(): double 
+        } 
+ 
+        +class ProductoElectronica extends Producto { 
+            -- 
+            .. Constructores .. 
+            + ProductoElectronica(id: int, nombre: String, precio: BigDecimal, categoria: String, stock: int, 
+activo: boolean, marca: String, modelo: String) 
+            .. Getters .. 
+            + getMarca(): String 
+            + getModelo(): String 
+            .. Setters .. 
+            + setMarca(marca: String): void 
+            + setModelo(modelo: String): void 
+            .. Controllers .. 
+            + mostrarDetalles(): String <<override>> 
+        } 
+ 
+        +class ProductoRopa extends Producto { 
+            -- 
+            .. Constructores .. 
+            + ProductoRopa(id: int, nombre: String, precio: BigDecimal, categoria: String, stock: int, activo: 
+boolean, talla: String, color: String) 
+            .. Getters .. 
+            + getTalla(): String 
+            + getColor(): String 
+            .. Setters .. 
+            + setTalla(talla: String): void 
+            + setColor(color: String): void 
+            .. Controllers .. 
+            + mostrarDetalles(): String <<override>> 
+        } 
+ 
+        '=== Enumeraciones === 
+ 
+        enum EstadoVenta { 
+            PROCESANDO 
+            COMPLETADA 
+        } 
+        
+    } 
+ 
+    package dreams.view #888888 { 
+ 
+        '=== Vistas === 
+ 
+        +class Dreams { 
+            -- 
+            + mostrarMenuPrincipal(): void 
+        } 
+ 
+        +class MenuClientes { 
+            -- 
+            + {static} mostrarMenuClientes(): void 
+            + {static} crearCliente(): void 
+            + {static} leerCliente(): void 
+            + {static} actualizarCliente(): void 
+            + {static} eliminarCliente(): void 
+            + {static} listarClientes(): void 
+        } 
+ 
+        +class MenuProductos { 
+            -- 
+            + {static} mostrarMenuProductos(): void 
+            + {static} crearProducto(): void 
+            + {static} leerProducto(): void 
+            + {static} actualizarProducto(): void 
+            + {static} eliminarProducto(): void 
+            + {static} listarProductos(): void 
+        } 
+ 
+        +class MenuVentas { 
+            -- 
+            + {static} mostrarMenuVentas(): void 
+            + {static} crearVenta(): void 
+            + {static} leerVenta(): void 
+            + {static} actualizarVenta(): void 
+            + {static} eliminarVenta(): void 
+            + {static} listarVentas(): void 
+        } 
+ 
+    } 
+ 
+    ' === Relaciones === 
+ 
+    ' --- Asociaciones simples --- 
+ 
+    Cliente "1" -- "0..*" Venta : realiza /'Un Cliente puede realizar cero o muchas Ventas. Cada Venta es 
+realizada por exactamente un Cliente.'/ 
+    ProductoVenta "1" -- "1" Producto : referencia /'Cada ProductoVenta se refiere a exactamente un Producto. 
+Un Producto puede estar en múltiples ProductoVenta.'/ 
+ 
+    ' --- Composiciones --- 
+ 
+    Venta "1" *-- "1..*" ProductoVenta : contiene /'Una Venta se compone de uno o más ProductoVenta. La vida 
+de ProductoVenta depende de la Venta (Composición).'/ 
+ 
+    ' --- Herencia (Dependencia) --- (extends marca la herencia) 
+ 
+    'Producto <|-- ProductoElectronica 
+    'Producto <|-- ProductoRopa 
+ 
+    ' --- Vistas --- Las vistas depende de las otras clases para realizar sus operaciones, pero no tiene una 
+asociación directa de datos con ellas. (ocultas por layout) 
+ 
+    'Cliente <.. MenuClientes as DependenciaMenuClientes : usa 
+    'Producto <.. MenuProductos as DependenciaMenuProductos : usa 
+    'Venta <.. MenuVentas as DependenciaMenuVentas : usa 
+ 
+    ' --- Enumeraciones --- 
+ 
+    Venta "1" -left- "1" EstadoVenta : está /'Una Venta tiene exactamente un EstadoVenta. Un EstadoVenta puede 
+ser asociado a cero o muchas Ventas.'/ 
+ 
+    ' === Layout === 
+ 
+    hide @unlinked 
+ 
+@enduml 
