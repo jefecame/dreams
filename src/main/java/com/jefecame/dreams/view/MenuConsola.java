@@ -9,7 +9,7 @@ import com.jefecame.dreams.model.ProductoElectronica;
 import com.jefecame.dreams.model.ProductoRopa;
 import com.jefecame.dreams.model.Venta;
 import com.jefecame.dreams.model.DetalleVenta;
-import com.jefecame.dreams.model.EstadoVenta;
+//import com.jefecame.dreams.model.EstadoVenta;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;

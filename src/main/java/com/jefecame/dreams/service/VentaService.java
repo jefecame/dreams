@@ -46,7 +46,6 @@ public class VentaService {
     
     /**
      * Inicia una nueva venta para un cliente específico.
-     * Nota: El parámetro empleado se omitió ya que no existe la clase Empleado en el modelo.
      * 
      * @param cliente cliente que realiza la compra
      * @return la venta creada
@@ -67,17 +66,6 @@ public class VentaService {
         ventaRepository.guardar(nuevaVenta);
         
         return nuevaVenta;
-    }
-    
-    /**
-     * Sobrecarga del método para mantener compatibilidad con la firma del UML.
-     * 
-     * @param cliente cliente que realiza la compra
-     * @param empleado empleado que atiende (parámetro ignorado por ahora)
-     * @return la venta creada
-     */
-    public Venta iniciarNuevaVenta(Cliente cliente, Object empleado) {
-        return iniciarNuevaVenta(cliente);
     }
     
     /**
