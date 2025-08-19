@@ -4,16 +4,17 @@
 ' Configuración
 ' =============
 '!theme spacelab
+skinparam backgroundColor #DarkSlateGray
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
 skinparam packageStyle rectangle
-title Dreams Sistema de Tienda Departamental
-header <color:#888888>Ing. Jesús Fernando Carrasco Mendoza</color>
+title <color:#White>Dreams Sistema de Tienda Departamental</color>
+center header <color:#White>Ing. Jesús Fernando Carrasco Mendoza</color>
 
 ' =================
 ' Capa de Principal
 ' =================
-package dreams #LightGray {
+package dreams #LightCyan {
     class App {
         --
         + {static} main(): void
@@ -23,7 +24,7 @@ package dreams #LightGray {
 ' =============
 ' Capa de Vista
 ' =============
-package dreams.view #LightGreen {
+package dreams.view #WhiteSmoke {
     class MenuConsola {
         - clienteService: ClienteService
         - productoService: ProductoService
@@ -39,7 +40,7 @@ package dreams.view #LightGreen {
 ' ================
 ' Capa de Servicio
 ' ================
-package dreams.service #LightBlue {
+package dreams.service #SeaShell {
 
     class ClienteService {
         - clienteRepository: ClienteRepository
@@ -105,13 +106,13 @@ package dreams.repository #LightGrey {
         + buscarPorId(id: int): Venta
         + obtenerTodas(): List<Venta>
     }
-    
+
 }
 
 ' ==============
 ' Capa de Modelo
 ' ==============
-package dreams.model #White {
+package dreams.model #Lavender {
 
     '=== Modelos ===
     class Tienda {
@@ -297,6 +298,11 @@ App ..> MenuConsola : inicializa
 MenuConsola ..> ClienteService : usa
 MenuConsola ..> ProductoService : usa
 MenuConsola ..> VentaService : usa
+ClienteService ..> ClienteRepository : usa
+ProductoService ..> ProductoRepository : usa
+VentaService ..> VentaRepository : usa
+VentaService ..> ProductoRepository : usa
+VentaService ..> ClienteRepository : usa
 
 ' === Layout ===
 hide @unlinked
