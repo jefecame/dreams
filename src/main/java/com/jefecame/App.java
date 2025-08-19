@@ -1,5 +1,6 @@
 package com.jefecame;
 
+import com.jefecame.dreams.view.MenuConsola;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,9 @@ public class App {
         logger.info("Iniciando aplicación Dreams v1.0.0");
         
         try {
-            Dreams tienda = new Tienda();
+            // Inicializar y mostrar el menú de consola
+            MenuConsola menuConsola = new MenuConsola();
+            menuConsola.mostrarMenuPrincipal();
 
             logger.info("Aplicación Dreams finalizada correctamente");
             
