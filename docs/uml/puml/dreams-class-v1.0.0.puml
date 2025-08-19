@@ -40,6 +40,7 @@ package dreams.view #LightGreen {
 ' Capa de Servicio
 ' ================
 package dreams.service #LightBlue {
+
     class ClienteService {
         - clienteRepository: ClienteRepository
         --
@@ -64,18 +65,20 @@ package dreams.service #LightBlue {
         - productoRepository: ProductoRepository
         - clienteRepository: ClienteRepository
         --
-        + iniciarNuevaVenta(cliente: Cliente, empleado: Empleado): Venta
+        + iniciarNuevaVenta(cliente: Cliente): Venta
         + agregarProductoAVenta(venta: Venta, producto: Producto, cantidad: int): boolean
         + finalizarVenta(venta: Venta): boolean
         + obtenerTodasLasVentas(): List<Venta>
     }
-    }
+
 }
+
 
 ' ===================
 ' Capa de Repositorio
 ' ===================
 package dreams.repository #LightGrey {
+
     class ClienteRepository {
         - clientes: List<Cliente>
         --
@@ -102,6 +105,7 @@ package dreams.repository #LightGrey {
         + buscarPorId(id: int): Venta
         + obtenerTodas(): List<Venta>
     }
+    
 }
 
 ' ==============
