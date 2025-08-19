@@ -6,14 +6,16 @@
 '!theme spacelab
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
-title Sistema de Tienda Departamental "Dreams"
+skinparam packageStyle rectangle
+title Dreams Sistema de Tienda Departamental
 header <color:#888888>Ing. Jesús Fernando Carrasco Mendoza</color>
 
 ' =================
 ' Capa de Principal
 ' =================
-package dreams #888888 {
+package dreams #LightGray {
     class App {
+        --
         + {static} main(): void
     }
 }
@@ -70,9 +72,9 @@ package dreams.service #LightBlue {
     }
 }
 
-' =========================
+' ===================
 ' Capa de Repositorio
-' =========================
+' ===================
 package dreams.repository #LightGrey {
     class ClienteRepository {
         - clientes: List<Cliente>
@@ -96,19 +98,15 @@ package dreams.repository #LightGrey {
         - ventas: List<Venta>
         --
         + guardar(venta: Venta): void
-        
+        + eliminar(id: int): boolean
         + buscarPorId(id: int): Venta
         + obtenerTodas(): List<Venta>
     }
 }
 
-
-
-
-
-' ====================
+' ==============
 ' Capa de Modelo
-' ====================
+' ==============
 package dreams.model #White {
 
     '=== Modelos ===
@@ -206,7 +204,7 @@ package dreams.model #White {
     class DetalleVenta {
         - **id**: int <<PK>>
         - **idVenta**: int <<FK>>
-        - **producto**: Producto <<FK>>        
+        - **producto**: Producto <<FK>>
         - cantidad: int
         - precioUnitario: BigDecimal
         - subtotal: BigDecimal
@@ -267,14 +265,14 @@ package dreams.model #White {
 
 }
 
-
-
-' === Relaciones ===
+' ==========
+' Relaciones
+' ==========
 
 ' --- Asociación ---
 Tienda "1" -- "0..*" Cliente : atiende
 Cliente "1" -- "0..*" Venta : realiza
-DetalleVenta "0..*" -- "1" Producto : se refiere a
+DetalleVenta "0..*" -- "1" Producto : tiene
 
 ' --- Agregación ---
 Tienda "1" o-- "0..*" Producto : vende

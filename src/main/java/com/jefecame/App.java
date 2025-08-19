@@ -1,11 +1,10 @@
 package com.jefecame;
 
-import com.jefecame.dreams.view.Dreams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Clase principal de la aplicación Dreams - Sistema de Tienda Departamental.
+ * Clase principal de la aplicación Dreams Sistema de Tienda Departamental.
  * 
  * Esta aplicación permite gestionar clientes, productos y ventas en un
  * sistema de punto de venta simplificado.
@@ -26,9 +25,8 @@ public class App {
         logger.info("Iniciando aplicación Dreams v1.0.0");
         
         try {
-            Dreams dreams = new Dreams();
-            dreams.mostrarMenuPrincipal();
-            
+            Dreams tienda = new Tienda();
+
             logger.info("Aplicación Dreams finalizada correctamente");
             
         } catch (Exception e) {
