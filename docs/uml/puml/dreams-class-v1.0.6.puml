@@ -1,18 +1,115 @@
 @startuml dreams
 
-'=== Estilos ===
-!theme spacelab
+' =============
+' Configuración
+' =============
+'!theme spacelab
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
-
-'=== Título ===
-title Programa de Tienda Departamental "Dreams"
-
-'=== Encabezado ===
+title Sistema de Tienda Departamental "Dreams"
 header <color:#888888>Ing. Jesús Fernando Carrasco Mendoza</color>
 
-'=== Paquetes ===
-package dreams.model #999999 {
+' =================
+' Capa de Principal
+' =================
+package dreams #888888 {
+    class App {
+        + {static} main(): void
+    }
+}
+
+' =============
+' Capa de Vista
+' =============
+package dreams.view #LightGreen {
+    class MenuConsola {
+        - clienteService: ClienteService
+        - productoService: ProductoService
+        - ventaService: VentaService
+        --
+        + mostrarMenuPrincipal(): void
+        + gestionarClientes(): void
+        + gestionarProductos(): void
+        + realizarVenta(): void
+    }
+}
+
+' ================
+' Capa de Servicio
+' ================
+package dreams.service #LightBlue {
+    class ClienteService {
+        - clienteRepository: ClienteRepository
+        --
+        + agregarCliente(nombre: String, email: String): Cliente
+        + eliminarCliente(id: int): boolean
+        + buscarCliente(id: int): Cliente
+        + obtenerTodosLosClientes(): List<Cliente>
+    }
+
+    class ProductoService {
+        - productoRepository: ProductoRepository
+        --
+        + agregarProducto(producto: Producto): void
+        + eliminarProducto(id: int): boolean
+        + buscarProducto(id: int): Producto
+        + actualizarStock(idProducto: int, cantidad: int): boolean
+        + obtenerTodosLosProductos(): List<Producto>
+    }
+
+    class VentaService {
+        - ventaRepository: VentaRepository
+        - productoRepository: ProductoRepository
+        - clienteRepository: ClienteRepository
+        --
+        + iniciarNuevaVenta(cliente: Cliente, empleado: Empleado): Venta
+        + agregarProductoAVenta(venta: Venta, producto: Producto, cantidad: int): boolean
+        + finalizarVenta(venta: Venta): boolean
+        + obtenerTodasLasVentas(): List<Venta>
+    }
+    }
+}
+
+' =========================
+' Capa de Repositorio
+' =========================
+package dreams.repository #LightGrey {
+    class ClienteRepository {
+        - clientes: List<Cliente>
+        --
+        + guardar(cliente: Cliente): void
+        + eliminar(id: int): boolean
+        + buscarPorId(id: int): Cliente
+        + obtenerTodos(): List<Cliente>
+    }
+
+    class ProductoRepository {
+        - productos: List<Producto>
+        --
+        + guardar(producto: Producto): void
+        + eliminar(id: int): boolean
+        + buscarPorId(id: int): Producto
+        + obtenerTodos(): List<Producto>
+    }
+
+    class VentaRepository {
+        - ventas: List<Venta>
+        --
+        + guardar(venta: Venta): void
+        
+        + buscarPorId(id: int): Venta
+        + obtenerTodas(): List<Venta>
+    }
+}
+
+
+
+
+
+' ====================
+' Capa de Modelo
+' ====================
+package dreams.model #White {
 
     '=== Modelos ===
     class Tienda {
@@ -55,17 +152,15 @@ package dreams.model #999999 {
         # **id**: int <<PK>>
         # nombre: String
         # precio: BigDecimal
-        # categoria: String
         # stock: int
         # activo: boolean
         --
         .. Constructores ..
-        + Producto(nombre: String, precio: BigDecimal, categoria: String, stock: int)
+        + Producto(nombre: String, precio: BigDecimal, stock: int)
         .. Getters ..
         + getId(): int
         + getNombre(): String
         + getPrecio(): BigDecimal
-        + getCategoria(): String
         + getStock(): int
         + isActivo(): boolean
         .. Setters ..
@@ -82,8 +177,8 @@ package dreams.model #999999 {
 
     class Venta {
         - **id**: int <<PK>>
-        - **idCliente**: int <<FK>>
-        - productosVenta: List<ProductoVenta>
+        - **cliente**: Cliente <<FK>>
+        - productosVenta: List<DetalleVenta>
         - subtotal: BigDecimal
         - impuestos: BigDecimal
         - total: BigDecimal
@@ -95,7 +190,7 @@ package dreams.model #999999 {
         .. Getters ..
         + getId(): int
         + getIdCliente(): int
-        + getProductosVenta(): List<ProductoVenta>
+        + getProductosVenta(): List<DetalleVenta>
         + getSubtotal(): BigDecimal
         + getImpuestos(): BigDecimal
         + getTotal(): BigDecimal
@@ -108,16 +203,16 @@ package dreams.model #999999 {
         + finalizarVenta(): boolean
     }
 
-    class ProductoVenta {
+    class DetalleVenta {
         - **id**: int <<PK>>
-        - **idProducto**: int <<FK>>
         - **idVenta**: int <<FK>>
+        - **producto**: Producto <<FK>>        
         - cantidad: int
         - precioUnitario: BigDecimal
         - subtotal: BigDecimal
         --
         .. Constructores ..
-        + ProductoVenta(idProducto: int, idVenta: int, cantidad: int, precioUnitario: BigDecimal)
+        + DetalleVenta(idProducto: int, idVenta: int, cantidad: int, precioUnitario: BigDecimal)
         .. Getters ..
         + getId(): int
         + getIdProducto(): int
@@ -136,7 +231,7 @@ package dreams.model #999999 {
         - modelo: String
         --
         .. Constructores ..
-        + ProductoElectronica(nombre: String, precio: BigDecimal, categoria: String, stock: int, marca: String, modelo: String)
+        + ProductoElectronica(nombre: String, precio: BigDecimal, stock: int, marca: String, modelo: String)
         .. Getters ..
         + getMarca(): String
         + getModelo(): String
@@ -152,7 +247,7 @@ package dreams.model #999999 {
         - color: String
         --
         .. Constructores ..
-        + ProductoRopa(nombre: String, precio: BigDecimal, categoria: String, stock: int, talla: String, color: String)
+        + ProductoRopa(nombre: String, precio: BigDecimal, stock: int, talla: String, color: String)
         .. Getters ..
         + getTalla(): String
         + getColor(): String
@@ -167,54 +262,26 @@ package dreams.model #999999 {
     enum EstadoVenta {
         PROCESANDO
         COMPLETADA
+        CANCELADA
     }
 
 }
 
-package dreams #888888 {
 
-    class App {
-        - clientes: List<Cliente>
-        - productos: List<Producto>
-        - ventas: List<Venta>
-        --
-        .. Controladores de Cliente ..
-        + agregarCliente(cliente: Cliente): void
-        + eliminarCliente(id: int): boolean
-        + buscarCliente(id: int): Cliente
-        + obtenerTodosLosClientes(): List<Cliente>
-        .. Controladores de Producto ..
-        + agregarProducto(producto: Producto): void
-        + eliminarProducto(id: int): boolean
-        + buscarProducto(id: int): Producto
-        + obtenerTodosLosProductos(): List<Producto>
-        .. Controladores de Venta ..
-        + iniciarNuevaVenta(idCliente: int): Venta
-        + agregarProductoAVenta(idVenta: int, idProducto: int, cantidad: int): boolean
-        + finalizarVenta(idVenta: int): boolean
-        + obtenerTodasLasVentas(): List<Venta>
-        --
-        + {static} main(): void
-    }
-
-}
 
 ' === Relaciones ===
 
 ' --- Asociación ---
 Tienda "1" -- "0..*" Cliente : atiende
 Cliente "1" -- "0..*" Venta : realiza
-ProductoVenta "0..*" -- "1" Producto : se refiere a
+DetalleVenta "0..*" -- "1" Producto : se refiere a
 
 ' --- Agregación ---
-Venta "1" o-- "0..*" ProductoVenta : contiene
 Tienda "1" o-- "0..*" Producto : vende
-App "1" o-- "0..*" Cliente : gestiona
-App "1" o-- "0..*" Producto : gestiona
-App "1" o-- "0..*" Venta : gestiona
 
 ' --- Composición ---
 Tienda "1" *-- "0..*" Venta : registra
+Venta "1" *-- "1..*" DetalleVenta : contiene
 
 ' --- Herencia ---
 Producto <|-- ProductoElectronica : extiende
@@ -222,6 +289,12 @@ Producto <|-- ProductoRopa : extiende
 
 ' --- Dependencia ---
 Venta ..> EstadoVenta : está
+
+' --- Dependencia entre paquetes ---
+App ..> MenuConsola : inicializa
+MenuConsola ..> ClienteService : usa
+MenuConsola ..> ProductoService : usa
+MenuConsola ..> VentaService : usa
 
 ' === Layout ===
 hide @unlinked
