@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Clase principal de la aplicación Dreams - Sistema de Gestión de Ventas.
+ * Clase principal de la aplicación Dreams - Sistema de Tienda Departamental.
  * 
  * Esta aplicación permite gestionar clientes, productos y ventas en un
  * sistema de punto de venta simplificado.

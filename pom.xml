@@ -27,7 +27,7 @@
         </dependencies>
     </dependencyManagement>
   <name>dreams</name>
-  <description>Dreams Sistema Departamental</description>
+  <description>Dreams Sistema de Tienda Departamental</description>
   <url>https://github.com/jefecame/dreams</url>
 
   <properties>
