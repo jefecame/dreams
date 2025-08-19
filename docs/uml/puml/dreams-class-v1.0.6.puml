@@ -20,11 +20,26 @@
     package dreams.model #999999 { 
  
         '=== Modelos === 
- 
-        +class Cliente { 
-            - **id**: int <<PK>> 
-            - nombre: String 
-            - email: String 
+
+        class Tienda {
+            - **id**: int <<PK>>
+            - nombre: String
+            - ubicacion: String
+            - telefono: String
+            -- 
+            .. Constructores ..
+            + Tienda(id: int, nombre: String, ubicacion: String, telefono: String)
+            .. Getters ..
+            + getId(): int
+            + getNombre(): String
+            + getUbicacion(): String
+            + getTelefono(): String
+        }
+
+        class Cliente {
+            - **id**: int <<PK>>
+            - nombre: String
+            - email: String
             - activo: boolean 
             -- 
             .. Constructores .. 
@@ -42,26 +57,26 @@
             + actualizarInformacion(nombre: String, email: String, activo: boolean): void 
         } 
  
-        +class Producto { 
+        abstract class Producto { 
             # **id**: int <<PK>> 
             # nombre: String 
             # precio: BigDecimal 
-            # categoria: CategoriaProducto 
+            # categoria: String
             # stock: int 
             # activo: boolean 
             -- 
             .. Constructores .. 
-            + Producto(nombre: String, precio: double, categoria: String, stock: int) 
+            + Producto(nombre: String, precio: BigDecimal, categoria: String, stock: int) 
             .. Getters .. 
             + getId(): int 
             + getNombre(): String 
-            + getPrecio(): double 
-            + getCategoria(): CategoriaProducto 
+            + getPrecio(): BigDecimal 
+            + getCategoria(): String 
             + getStock(): int 
             + isActivo(): boolean 
             .. Setters .. 
             + setNombre(nombre: String): void 
-            + setPrecio(precio: double): void 
+            + setPrecio(precio: BigDecimal): void 
             + setCategoria(categoria: String): void 
             + setStock(stock: int): void 
             + setActivo(activo: boolean): void 
@@ -69,9 +84,9 @@
             + actualizarStock(cantidad: int): void 
             + validarDisponibilidad(cantidadRequerida: Integer): boolean 
             + {abstract} mostrarDetalles(): String 
-        } 
+        }
  
-        +class Venta { 
+        class Venta { 
             - **id**: int <<PK>> 
             - **idCliente**: int <<FK>> 
             - productosVenta: List<ProductoVenta> 
@@ -99,34 +114,35 @@
             + finalizarVenta(): boolean 
         } 
  
-        +class ProductoVenta { 
+        class ProductoVenta { 
             - **id**: int <<PK>> 
             - **idProducto**: int <<FK>> 
             - **idVenta**: int <<FK>> 
             - cantidad: int 
-            - precioUnitario: double 
-            - subtotal: double 
+            - precioUnitario: BigDecimal 
+            - subtotal: BigDecimal 
             -- 
             .. Constructors .. 
-            + ProductoVenta(idProducto: int, idVenta: int, cantidad: int, precioUnitario: double) 
+            + ProductoVenta(idProducto: int, idVenta: int, cantidad: int, precioUnitario: double)
             .. Getters .. 
             + getId(): int 
             + getIdProducto(): int 
             + getIdVenta(): int 
             + getCantidad(): int 
-            + getPrecioUnitario(): double 
-            + getSubtotal(): double 
+            + getPrecioUnitario(): BigDecimal 
+            + getSubtotal(): BigDecimal 
             .. Setters .. 
             + setCantidad(cantidad: int): void 
             .. Controllers .. 
-            + calcularSubtotal(): double 
+            + calcularSubtotal(): BigDecimal 
         } 
  
-        +class ProductoElectronica extends Producto { 
+        class ProductoElectronica extends Producto {
+            - marca: String
+            - modelo: String
             -- 
             .. Constructores .. 
-            + ProductoElectronica(id: int, nombre: String, precio: BigDecimal, categoria: String, stock: int, 
-activo: boolean, marca: String, modelo: String) 
+            + ProductoElectronica(id: int, nombre: String, precio: BigDecimal, categoria: String, stock: int, activo: boolean, marca: String, modelo: String)
             .. Getters .. 
             + getMarca(): String 
             + getModelo(): String 
@@ -135,13 +151,14 @@ activo: boolean, marca: String, modelo: String)
             + setModelo(modelo: String): void 
             .. Controllers .. 
             + mostrarDetalles(): String <<override>> 
-        } 
+        }
  
-        +class ProductoRopa extends Producto { 
+        class ProductoRopa extends Producto {
+            - talla: String
+            - color: String
             -- 
             .. Constructores .. 
-            + ProductoRopa(id: int, nombre: String, precio: BigDecimal, categoria: String, stock: int, activo: 
-boolean, talla: String, color: String) 
+            + ProductoRopa(id: int, nombre: String, precio: BigDecimal, categoria: String, stock: int, activo: boolean, talla: String, color: String) 
             .. Getters .. 
             + getTalla(): String 
             + getColor(): String 
@@ -154,84 +171,50 @@ boolean, talla: String, color: String)
  
         '=== Enumeraciones === 
  
-        enum EstadoVenta { 
-            PROCESANDO 
-            COMPLETADA 
+        enum EstadoVenta {
+            PROCESANDO
+            COMPLETADA
         } 
         
     } 
  
-    package dreams.view #888888 { 
+    package dreams #888888 {
  
-        '=== Vistas === 
- 
-        +class Dreams { 
+        class App {
             -- 
-            + mostrarMenuPrincipal(): void 
-        } 
+            + {static} main(): void
+        }
  
-        +class MenuClientes { 
-            -- 
-            + {static} mostrarMenuClientes(): void 
-            + {static} crearCliente(): void 
-            + {static} leerCliente(): void 
-            + {static} actualizarCliente(): void 
-            + {static} eliminarCliente(): void 
-            + {static} listarClientes(): void 
-        } 
+    }
  
-        +class MenuProductos { 
-            -- 
-            + {static} mostrarMenuProductos(): void 
-            + {static} crearProducto(): void 
-            + {static} leerProducto(): void 
-            + {static} actualizarProducto(): void 
-            + {static} eliminarProducto(): void 
-            + {static} listarProductos(): void 
-        } 
+    ' === Relaciones ===
  
-        +class MenuVentas { 
-            -- 
-            + {static} mostrarMenuVentas(): void 
-            + {static} crearVenta(): void 
-            + {static} leerVenta(): void 
-            + {static} actualizarVenta(): void 
-            + {static} eliminarVenta(): void 
-            + {static} listarVentas(): void 
-        } 
+    ' --- Agregaciones ---
  
-    } 
- 
-    ' === Relaciones === 
- 
-    ' --- Asociaciones simples --- 
- 
-    Cliente "1" -- "0..*" Venta : realiza /'Un Cliente puede realizar cero o muchas Ventas. Cada Venta es 
-realizada por exactamente un Cliente.'/ 
-    ProductoVenta "1" -- "1" Producto : referencia /'Cada ProductoVenta se refiere a exactamente un Producto. 
-Un Producto puede estar en múltiples ProductoVenta.'/ 
+    Cliente "1" -- "0..*" Venta : realiza
+    ProductoVenta "1" -- "1" Producto : referencia
  
     ' --- Composiciones --- 
  
-    Venta "1" *-- "1..*" ProductoVenta : contiene /'Una Venta se compone de uno o más ProductoVenta. La vida 
-de ProductoVenta depende de la Venta (Composición).'/ 
+    Venta "1" *-- "1..*" ProductoVenta : contiene
+
+
+    
  
-    ' --- Herencia (Dependencia) --- (extends marca la herencia) 
+    ' --- Herencia (Dependencia) --- (Not needed because "extends" on class Producto define inheritance)
+
+    Producto <|-- ProductoElectronica : extiende
+    Producto <|-- ProductoRopa : extiende
  
-    'Producto <|-- ProductoElectronica 
-    'Producto <|-- ProductoRopa 
+    ' --- Vistas --- Las vistas depende de las otras clases para realizar sus operaciones, pero no tiene una asociación directa de datos con ellas. (ocultas por layout) 
  
-    ' --- Vistas --- Las vistas depende de las otras clases para realizar sus operaciones, pero no tiene una 
-asociación directa de datos con ellas. (ocultas por layout) 
- 
-    'Cliente <.. MenuClientes as DependenciaMenuClientes : usa 
-    'Producto <.. MenuProductos as DependenciaMenuProductos : usa 
-    'Venta <.. MenuVentas as DependenciaMenuVentas : usa 
+    Dreams "1" <-- "0..*" Clientes : atiende
+    Dreams "1" <-- "0..*" Productos : tiene
+    Dreams "1" <-- "0..*" Ventas : realiza
  
     ' --- Enumeraciones --- 
  
-    Venta "1" -left- "1" EstadoVenta : está /'Una Venta tiene exactamente un EstadoVenta. Un EstadoVenta puede 
-ser asociado a cero o muchas Ventas.'/ 
+    Venta --  EstadoVenta : está
  
     ' === Layout === 
  
