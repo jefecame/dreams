@@ -24,4 +24,6 @@ hs_err_pid*
 replay_pid*
 
 # Test files
-/src/test/*
+/src/test/
+/target/
+/logs/

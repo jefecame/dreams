@@ -1,0 +1,308 @@
+@startuml dreams-class-v1.0.1
+
+' !theme plain
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+title Dreams Sistema de Tienda Departamental - Class Diagram v1.0.1
+
+package "com.jefecame" {
+    class App {
+        - {static} logger : Logger
+        + {static} main(args : String[]) : void
+    }
+}
+
+package "com.jefecame.dreams.view" {
+    class Tienda {
+        - nombre : String
+        - clienteService : ClienteService
+        - productoService : ProductoService
+        - ventaService : VentaService
+        - scanner : Scanner
+        
+        + Tienda()
+        + getNombre() : String
+        + mostrarMenuPrincipal() : void
+        + gestionarClientes() : void
+        + gestionarProductos() : void
+        + realizarVenta() : void
+        - agregarCliente() : void
+        - listarClientes() : void
+        - buscarCliente() : void
+        - actualizarCliente() : void
+        - desactivarCliente() : void
+        - agregarProductoElectronico() : void
+        - agregarProductoRopa() : void
+        - listarProductos() : void
+        - buscarProducto() : void
+        - actualizarStock() : void
+        - desactivarProducto() : void
+        - mostrarVentas() : void
+        - mostrarResumenVenta(venta : Venta) : void
+    }
+}
+
+package "com.jefecame.dreams.model" {
+    class Cliente {
+        - id : int
+        - nombre : String
+        - email : String
+        - activo : boolean
+        
+        + Cliente(id : int, nombre : String, email : String)
+        + getId() : int
+        + getNombre() : String
+        + getEmail() : String
+        + isActivo() : boolean
+        + setNombre(nombre : String) : void
+        + setEmail(email : String) : void
+        + setActivo(activo : boolean) : void
+        + actualizarInformacion(nombre : String, email : String, activo : boolean) : void
+    }
+    
+    abstract class Producto {
+        # id : int
+        # nombre : String
+        # precio : BigDecimal
+        # stock : int
+        # activo : boolean
+        - {static} contadorId : int
+        
+        + Producto(nombre : String, precio : BigDecimal, stock : int)
+        + getId() : int
+        + getNombre() : String
+        + getPrecio() : BigDecimal
+        + getStock() : int
+        + isActivo() : boolean
+        + setNombre(nombre : String) : void
+        + setPrecio(precio : BigDecimal) : void
+        + setCategoria(categoria : String) : void
+        + setStock(stock : int) : void
+        + setActivo(activo : boolean) : void
+        + actualizarStock(cantidad : int) : void
+        + validarDisponibilidad(cantidadRequerida : Integer) : boolean
+        + {abstract} mostrarDetalles() : String
+    }
+    
+    class ProductoElectronica {
+        - marca : String
+        - modelo : String
+        
+        + ProductoElectronica(nombre : String, precio : BigDecimal, stock : int, marca : String, modelo : String)
+        + getMarca() : String
+        + getModelo() : String
+        + setMarca(marca : String) : void
+        + setModelo(modelo : String) : void
+        + mostrarDetalles() : String
+    }
+    
+    class ProductoRopa {
+        - talla : String
+        - color : String
+        
+        + ProductoRopa(nombre : String, precio : BigDecimal, stock : int, talla : String, color : String)
+        + getTalla() : String
+        + getColor() : String
+        + setTalla(talla : String) : void
+        + setColor(color : String) : void
+        + mostrarDetalles() : String
+    }
+    
+    class Venta {
+        - id : int
+        - cliente : Cliente
+        - productosVenta : List<DetalleVenta>
+        - subtotal : BigDecimal
+        - impuestos : BigDecimal
+        - total : BigDecimal
+        - fechaCreacion : LocalDateTime
+        - estado : EstadoVenta
+        - {static} contadorId : int
+        - {static} TASA_IMPUESTO : BigDecimal
+        
+        + Venta(cliente : Cliente)
+        + getId() : int
+        + getIdCliente() : int
+        + getCliente() : Cliente
+        + setCliente(cliente : Cliente) : void
+        + getProductosVenta() : List<DetalleVenta>
+        + getSubtotal() : BigDecimal
+        + getImpuestos() : BigDecimal
+        + getTotal() : BigDecimal
+        + getFechaCreacion() : LocalDateTime
+        + getEstado() : EstadoVenta
+        + agregarProducto(producto : Producto, cantidad : int) : boolean
+        + removerProducto(idProductoVenta : int) : boolean
+        + calcularTotal() : boolean
+        + finalizarVenta() : boolean
+        + cancelarVenta() : boolean
+    }
+    
+    enum EstadoVenta {
+        PROCESANDO
+        COMPLETADA
+        CANCELADA
+    }
+    
+    class DetalleVenta {
+        - id : int
+        - idVenta : int
+        - producto : Producto
+        - cantidad : int
+        - precioUnitario : BigDecimal
+        - subtotal : BigDecimal
+        - {static} contadorId : int
+        
+        + DetalleVenta(producto : Producto, idVenta : int, cantidad : int)
+        + getId() : int
+        + getIdProducto() : int
+        + getIdVenta() : int
+        + getCantidad() : int
+        + getPrecioUnitario() : BigDecimal
+        + getSubtotal() : BigDecimal
+        + getProducto() : Producto
+        + setCantidad(cantidad : int) : void
+        + calcularSubtotal() : BigDecimal
+    }
+}
+
+package "com.jefecame.dreams.service" {
+    class ClienteService {
+        - clienteRepository : ClienteRepository
+        - {static} contadorId : int
+        
+        + ClienteService(clienteRepository : ClienteRepository)
+        + ClienteService()
+        + agregarCliente(nombre : String, email : String) : Cliente
+        + eliminarCliente(id : int) : boolean
+        + buscarCliente(id : int) : Cliente
+        + obtenerTodosLosClientes() : List<Cliente>
+        + obtenerClientesActivos() : List<Cliente>
+        + actualizarCliente(id : int, nombre : String, email : String) : boolean
+        + desactivarCliente(id : int) : boolean
+        + reactivarCliente(id : int) : boolean
+        - esEmailValido(email : String) : boolean
+    }
+    
+    class ProductoService {
+        - productoRepository : ProductoRepository
+        
+        + ProductoService(productoRepository : ProductoRepository)
+        + ProductoService()
+        + agregarProducto(producto : Producto) : void
+        + eliminarProducto(id : int) : boolean
+        + buscarProducto(id : int) : Producto
+        + actualizarStock(idProducto : int, cantidad : int) : boolean
+        + obtenerTodosLosProductos() : List<Producto>
+        + obtenerProductosActivos() : List<Producto>
+        + obtenerProductosConStock() : List<Producto>
+        + buscarProductosPorNombre(nombre : String) : List<Producto>
+        + actualizarProducto(id : int, nombre : String, precio : BigDecimal) : boolean
+        + desactivarProducto(id : int) : boolean
+        + reactivarProducto(id : int) : boolean
+        + validarDisponibilidad(idProducto : int, cantidadRequerida : int) : boolean
+    }
+    
+    class VentaService {
+        - ventaRepository : VentaRepository
+        - productoRepository : ProductoRepository
+        - clienteRepository : ClienteRepository
+        
+        + VentaService(ventaRepository : VentaRepository, productoRepository : ProductoRepository, clienteRepository : ClienteRepository)
+        + VentaService()
+        + iniciarNuevaVenta(cliente : Cliente) : Venta
+        + agregarProductoAVenta(venta : Venta, producto : Producto, cantidad : int) : boolean
+        + finalizarVenta(venta : Venta) : boolean
+        + cancelarVenta(venta : Venta) : boolean
+        + obtenerTodasLasVentas() : List<Venta>
+        + obtenerVentasPorEstado(estado : EstadoVenta) : List<Venta>
+        + obtenerVentasPorCliente(cliente : Cliente) : List<Venta>
+        + buscarVenta(id : int) : Venta
+        + obtenerVentasCompletadas() : List<Venta>
+        + obtenerVentasEnProceso() : List<Venta>
+        + removerProductoDeVenta(venta : Venta, idDetalleVenta : int) : boolean
+        + iniciarNuevaVentaPorClienteId(clienteId : int) : Venta
+        + obtenerVentasPorClienteId(clienteId : int) : List<Venta>
+        + validarClienteActivo(clienteId : int) : boolean
+    }
+}
+
+package "com.jefecame.dreams.repository" {
+    class ClienteRepository {
+        - clientes : List<Cliente>
+        
+        + ClienteRepository()
+        + guardar(cliente : Cliente) : void
+        + eliminar(id : int) : boolean
+        + buscarPorId(id : int) : Cliente
+        + obtenerTodos() : List<Cliente>
+        + contarClientes() : int
+        + obtenerClientesActivos() : List<Cliente>
+    }
+    
+    class ProductoRepository {
+        - productos : List<Producto>
+        
+        + ProductoRepository()
+        + guardar(producto : Producto) : void
+        + eliminar(id : int) : boolean
+        + buscarPorId(id : int) : Producto
+        + obtenerTodos() : List<Producto>
+        + contarProductos() : int
+        + obtenerProductosActivos() : List<Producto>
+        + obtenerProductosConStock() : List<Producto>
+        + buscarPorNombre(nombre : String) : List<Producto>
+    }
+    
+    class VentaRepository {
+        - ventas : List<Venta>
+        
+        + VentaRepository()
+        + guardar(venta : Venta) : void
+        + eliminar(id : int) : boolean
+        + buscarPorId(id : int) : Venta
+        + obtenerTodas() : List<Venta>
+        + contarVentas() : int
+        + obtenerVentasPorEstado(estado : EstadoVenta) : List<EstadoVenta>
+        + obtenerVentasPorCliente(cliente : Cliente) : List<Venta>
+        + obtenerVentasPorFecha(fechaInicio : LocalDateTime, fechaFin : LocalDateTime) : List<Venta>
+        + obtenerVentasCompletadas() : List<Venta>
+        + obtenerVentasEnProceso() : List<Venta>
+    }
+}
+
+' Relationships
+App --> Tienda : uses
+
+Tienda --> ClienteService : uses
+Tienda --> ProductoService : uses
+Tienda --> VentaService : uses
+
+ClienteService --> ClienteRepository : uses
+ProductoService --> ProductoRepository : uses
+VentaService --> VentaRepository : uses
+VentaService --> ProductoRepository : uses
+VentaService --> ClienteRepository : uses
+
+ClienteRepository --> Cliente : manages
+ProductoRepository --> Producto : manages
+VentaRepository --> Venta : manages
+
+ProductoElectronica --|> Producto : extends
+ProductoRopa --|> Producto : extends
+
+Venta --> Cliente : has
+Venta --> DetalleVenta : contains
+Venta --> EstadoVenta : uses
+
+DetalleVenta --> Producto : references
+
+note right of Producto : Abstract class with\nabstract method mostrarDetalles()
+
+note bottom of EstadoVenta : Enum with states:\n- PROCESANDO\n- COMPLETADA\n- CANCELADA
+
+note bottom of Venta : Contains business logic for\nsales processing and\nstock management
+
+@enduml
