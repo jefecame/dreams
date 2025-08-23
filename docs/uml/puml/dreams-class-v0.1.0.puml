@@ -1,0 +1,315 @@
+@startuml dreams
+
+' =============
+' Configuración
+' =============
+'!theme spacelab
+skinparam backgroundColor #DarkSlateGray
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam packageStyle rectangle
+title <color:#White>Dreams Sistema de Tienda Departamental</color>
+center header <color:#White>Ing. Jesús Fernando Carrasco Mendoza</color>
+
+' ====================
+' Aplicación Principal
+' ====================
+package dreams #LightCyan {
+    class App {
+        --
+        + {static} main(): void
+    }
+}
+
+' ================================
+' Capa View (Vista o Presentación)
+' ================================
+package dreams.view #WhiteSmoke {
+    class Tienda {
+        - nombre: String
+        - clienteService: ClienteService
+        - productoService: ProductoService
+        - ventaService: VentaService
+        --
+        + gtNombre(): void
+        + mostrarMenuPrincipal(): void
+        + gestionarClientes(): void
+        + gestionarProductos(): void
+        + realizarVenta(): void
+    }
+}
+
+' ===========================================
+' Capa Service (Servicio o Lógica de Negocio)
+' ===========================================
+package dreams.service #SeaShell {
+
+    class ClienteService {
+        - clienteRepository: ClienteRepository
+        --
+        + agregarCliente(nombre: String, email: String): Cliente
+        + eliminarCliente(id: int): boolean
+        + buscarCliente(id: int): Cliente
+        + obtenerTodosLosClientes(): List<Cliente>
+    }
+
+    class ProductoService {
+        - productoRepository: ProductoRepository
+        --
+        + agregarProducto(producto: Producto): void
+        + eliminarProducto(id: int): boolean
+        + buscarProducto(id: int): Producto
+        + actualizarStock(idProducto: int, cantidad: int): boolean
+        + obtenerTodosLosProductos(): List<Producto>
+    }
+
+    class VentaService {
+        - ventaRepository: VentaRepository
+        - productoRepository: ProductoRepository
+        - clienteRepository: ClienteRepository
+        --
+        + iniciarNuevaVenta(cliente: Cliente): Venta
+        + agregarProductoAVenta(venta: Venta, producto: Producto, cantidad: int): boolean
+        + finalizarVenta(venta: Venta): boolean
+        + obtenerTodasLasVentas(): List<Venta>
+    }
+
+}
+
+
+' ============================================
+' Capa Repository (Repositorio o Persistencia)
+' ============================================
+package dreams.repository #LightGrey {
+
+    class ClienteRepository {
+        - clientes: List<Cliente>
+        --
+        + guardar(cliente: Cliente): void
+        + eliminar(id: int): boolean
+        + buscarPorId(id: int): Cliente
+        + obtenerTodos(): List<Cliente>
+    }
+
+    class ProductoRepository {
+        - productos: List<Producto>
+        --
+        + guardar(producto: Producto): void
+        + eliminar(id: int): boolean
+        + buscarPorId(id: int): Producto
+        + obtenerTodos(): List<Producto>
+    }
+
+    class VentaRepository {
+        - ventas: List<Venta>
+        --
+        + guardar(venta: Venta): void
+        + eliminar(id: int): boolean
+        + buscarPorId(id: int): Venta
+        + obtenerTodas(): List<Venta>
+    }
+
+}
+
+' =============================
+' Capa Model (Modelo o Dominio)
+' =============================
+package dreams.model #Lavender {
+
+    '=== Modelos ===
+    class Tienda {
+        - **id**: int <<PK>>
+        - nombre: String
+        - ubicacion: String
+        - telefono: String
+        --
+        .. Constructores ..
+        + Tienda(id: int, nombre: String, ubicacion: String, telefono: String)
+        .. Getters ..
+        + getId(): int
+        + getNombre(): String
+        + getUbicacion(): String
+        + getTelefono(): String
+    }
+
+    class Cliente {
+        - **id**: int <<PK>>
+        - nombre: String
+        - email: String
+        - activo: boolean
+        --
+        .. Constructores ..
+        + Cliente(id: int, nombre: String, email: String)
+        .. Getters ..
+        + getId(): int
+        + getNombre(): String
+        + getEmail(): String
+        + isActivo(): boolean
+        .. Setters ..
+        + setNombre(nombre: String): void
+        + setEmail(email: String): void
+        + setActivo(activo: boolean): void
+        .. Controladores ..
+        + actualizarInformacion(nombre: String, email: String, activo: boolean): void
+    }
+
+    abstract class Producto {
+        # **id**: int <<PK>>
+        # nombre: String
+        # precio: BigDecimal
+        # stock: int
+        # activo: boolean
+        --
+        .. Constructores ..
+        + Producto(nombre: String, precio: BigDecimal, stock: int)
+        .. Getters ..
+        + getId(): int
+        + getNombre(): String
+        + getPrecio(): BigDecimal
+        + getStock(): int
+        + isActivo(): boolean
+        .. Setters ..
+        + setNombre(nombre: String): void
+        + setPrecio(precio: BigDecimal): void
+        + setCategoria(categoria: String): void
+        + setStock(stock: int): void
+        + setActivo(activo: boolean): void
+        .. Controladores ..
+        + actualizarStock(cantidad: int): void
+        + validarDisponibilidad(cantidadRequerida: Integer): boolean
+        + {abstract} mostrarDetalles(): String
+    }
+
+    class Venta {
+        - **id**: int <<PK>>
+        - **cliente**: Cliente <<FK>>
+        - productosVenta: List<DetalleVenta>
+        - subtotal: BigDecimal
+        - impuestos: BigDecimal
+        - total: BigDecimal
+        - fechaCreacion: LocalDateTime
+        - estado: EstadoVenta
+        --
+        .. Constructores ..
+        + Venta(idCliente: int, fecha: LocalDateTime)
+        .. Getters ..
+        + getId(): int
+        + getIdCliente(): int
+        + getProductosVenta(): List<DetalleVenta>
+        + getSubtotal(): BigDecimal
+        + getImpuestos(): BigDecimal
+        + getTotal(): BigDecimal
+        + getFechaCreacion(): LocalDateTime
+        + getEstado(): EstadoVenta
+        .. Controladores ..
+        + agregarProducto(producto: Producto, cantidad: int): boolean
+        + removerProducto(idProductoVenta: int): boolean
+        + calcularTotal(): boolean
+        + finalizarVenta(): boolean
+    }
+
+    class DetalleVenta {
+        - **id**: int <<PK>>
+        - **idVenta**: int <<FK>>
+        - **producto**: Producto <<FK>>
+        - cantidad: int
+        - precioUnitario: BigDecimal
+        - subtotal: BigDecimal
+        --
+        .. Constructores ..
+        + DetalleVenta(idProducto: int, idVenta: int, cantidad: int, precioUnitario: BigDecimal)
+        .. Getters ..
+        + getId(): int
+        + getIdProducto(): int
+        + getIdVenta(): int
+        + getCantidad(): int
+        + getPrecioUnitario(): BigDecimal
+        + getSubtotal(): BigDecimal
+        .. Setters ..
+        + setCantidad(cantidad: int): void
+        .. Controladores ..
+        + calcularSubtotal(): BigDecimal
+    }
+
+    class ProductoElectronica extends Producto {
+        - marca: String
+        - modelo: String
+        --
+        .. Constructores ..
+        + ProductoElectronica(nombre: String, precio: BigDecimal, stock: int, marca: String, modelo: String)
+        .. Getters ..
+        + getMarca(): String
+        + getModelo(): String
+        .. Setters ..
+        + setMarca(marca: String): void
+        + setModelo(modelo: String): void
+        .. Controladores ..
+        + mostrarDetalles(): String <<override>>
+    }
+
+    class ProductoRopa extends Producto {
+        - talla: String
+        - color: String
+        --
+        .. Constructores ..
+        + ProductoRopa(nombre: String, precio: BigDecimal, stock: int, talla: String, color: String)
+        .. Getters ..
+        + getTalla(): String
+        + getColor(): String
+        .. Setters ..
+        + setTalla(talla: String): void
+        + setColor(color: String): void
+        .. Controladores ..
+        + mostrarDetalles(): String <<override>>
+    }
+
+    '=== Enumeraciones ===
+    enum EstadoVenta {
+        PROCESANDO
+        COMPLETADA
+        CANCELADA
+    }
+
+}
+
+' ==========
+' Relaciones
+' ==========
+
+' --- Asociación ---
+Tienda "1" -- "0..*" Cliente : atiende
+Cliente "1" -- "0..*" Venta : realiza
+DetalleVenta "0..*" -- "1" Producto : tiene
+
+' --- Agregación ---
+Tienda "1" o-- "0..*" Producto : vende
+
+' --- Composición ---
+Tienda "1" *-- "0..*" Venta : registra
+Venta "1" *-- "1..*" DetalleVenta : contiene
+
+' --- Herencia ---
+Producto <|-- ProductoElectronica : extiende
+Producto <|-- ProductoRopa : extiende
+
+' --- Dependencia ---
+Venta ..> EstadoVenta : está
+
+' --- Dependencia entre paquetes ---
+
+App ..> MenuConsola : inicializa
+
+MenuConsola ..> ClienteService : usa
+MenuConsola ..> ProductoService : usa
+MenuConsola ..> VentaService : usa
+
+ClienteService ..> ClienteRepository : usa
+ProductoService ..> ProductoRepository : usa
+VentaService ..> VentaRepository : usa
+VentaService ..> ProductoRepository : usa
+VentaService ..> ClienteRepository : usa
+
+' === Layout ===
+hide @unlinked
+
+@enduml
