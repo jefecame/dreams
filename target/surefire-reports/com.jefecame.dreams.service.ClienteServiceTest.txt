@@ -1,0 +1,23 @@
+-------------------------------------------------------------------------------
+Test set: com.jefecame.dreams.service.ClienteServiceTest
+-------------------------------------------------------------------------------
+Tests run: 20, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 0.900 s <<< FAILURE! -- in com.jefecame.dreams.service.ClienteServiceTest
+com.jefecame.dreams.service.ClienteServiceTest.testEmailValidation -- Time elapsed: 0.114 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Should reject invalid email: user..name@domain.com ==> Expected java.lang.IllegalArgumentException to be thrown, but nothing was thrown.
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:39)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3127)
+	at com.jefecame.dreams.service.ClienteServiceTest.testEmailValidation(ClienteServiceTest.java:387)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.jefecame.dreams.service.ClienteServiceTest.testEdgeCases -- Time elapsed: 0.010 s <<< ERROR!
+java.lang.IllegalArgumentException: El formato del email no es válido
+	at com.jefecame.dreams.service.ClienteService.agregarCliente(ClienteService.java:54)
+	at com.jefecame.dreams.service.ClienteServiceTest.testEdgeCases(ClienteServiceTest.java:401)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+

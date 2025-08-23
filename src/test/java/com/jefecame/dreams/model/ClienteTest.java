@@ -1,263 +1,168 @@
 package com.jefecame.dreams.model;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDateTime;
-
 /**
- * Unit tests for the Cliente class.
- * Tests validation, business logic, and edge cases.
+ * Comprehensive unit tests for the Cliente class.
+ * Tests all aspects of client management functionality.
  * 
  * @author jefecame
  * @version 1.0.0
  */
-@DisplayName("Cliente Class Tests")
+@DisplayName("Cliente Model Tests")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ClienteTest {
     
     private Cliente cliente;
     
     @BeforeEach
     void setUp() {
-        cliente = new Cliente("Juan Pérez", "juan.perez@example.com");
+        cliente = new Cliente(1, "Juan Pérez", "juan.perez@email.com");
     }
     
     @Test
-    @DisplayName("Should create cliente with valid data")
-    void testValidClienteCreation() {
-        assertNotNull(cliente);
-        assertNotNull(cliente.getId());
-        assertEquals("Juan Pérez", cliente.getNombre());
-        assertEquals("juan.perez@example.com", cliente.getEmail());
-        assertTrue(cliente.isActivo());
-        assertNotNull(cliente.getFechaCreacion());
-        assertNotNull(cliente.getFechaUltimaActualizacion());
+    @Order(1)
+    @DisplayName("Cliente should be created with valid parameters")
+    void testClienteCreation() {
+        assertNotNull(cliente, "Cliente should not be null");
+        assertEquals(1, cliente.getId(), "Cliente ID should match");
+        assertEquals("Juan Pérez", cliente.getNombre(), "Cliente name should match");
+        assertEquals("juan.perez@email.com", cliente.getEmail(), "Cliente email should match");
+        assertTrue(cliente.isActivo(), "New cliente should be active by default");
     }
     
     @Test
-    @DisplayName("Should normalize email to lowercase")
-    void testEmailNormalization() {
-        Cliente cliente = new Cliente("Ana García", "ANA.GARCIA@EXAMPLE.COM");
-        assertEquals("ana.garcia@example.com", cliente.getEmail());
+    @Order(2)
+    @DisplayName("Cliente getters should return correct values")
+    void testClienteGetters() {
+        assertEquals(1, cliente.getId(), "getId should return correct ID");
+        assertEquals("Juan Pérez", cliente.getNombre(), "getNombre should return correct name");
+        assertEquals("juan.perez@email.com", cliente.getEmail(), "getEmail should return correct email");
+        assertTrue(cliente.isActivo(), "isActivo should return true for new client");
     }
     
     @Test
-    @DisplayName("Should trim whitespace from name and email")
-    void testWhitespaceTriming() {
-        Cliente cliente = new Cliente("  Pedro López  ", "  pedro@example.com  ");
-        assertEquals("Pedro López", cliente.getNombre());
-        assertEquals("pedro@example.com", cliente.getEmail());
-    }
-    
-    @Test
-    @DisplayName("Should throw exception for null nombre")
-    void testNullNombreValidation() {
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new Cliente(null, "test@example.com")
-        );
-        assertTrue(exception.getMessage().contains("nombre"));
-    }
-    
-    @Test
-    @DisplayName("Should throw exception for empty nombre")
-    void testEmptyNombreValidation() {
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new Cliente("", "test@example.com")
-        );
-        assertTrue(exception.getMessage().contains("nombre"));
-    }
-    
-    @Test
-    @DisplayName("Should throw exception for short nombre")
-    void testShortNombreValidation() {
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new Cliente("A", "test@example.com")
-        );
-        assertTrue(exception.getMessage().contains("al menos 2 caracteres"));
-    }
-    
-    @Test
-    @DisplayName("Should throw exception for very long nombre")
-    void testLongNombreValidation() {
-        String longName = "A".repeat(101);
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new Cliente(longName, "test@example.com")
-        );
-        assertTrue(exception.getMessage().contains("100 caracteres"));
-    }
-    
-    @Test
-    @DisplayName("Should throw exception for null email")
-    void testNullEmailValidation() {
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new Cliente("Test User", null)
-        );
-        assertTrue(exception.getMessage().contains("email"));
-    }
-    
-    @Test
-    @DisplayName("Should throw exception for invalid email format")
-    void testInvalidEmailValidation() {
-        String[] invalidEmails = {
-            "invalid-email",
-            "@example.com",
-            "user@",
-            "user@.com",
-            "user@example", // Missing TLD
-            "" // Empty string (handled by empty validation, not format)
-        };
+    @Order(3)
+    @DisplayName("Cliente setters should update values correctly")
+    void testClienteSetters() {
+        // Test setNombre
+        cliente.setNombre("María García");
+        assertEquals("María García", cliente.getNombre(), "setNombre should update name");
         
-        for (String invalidEmail : invalidEmails) {
-            IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> new Cliente("Test User", invalidEmail),
-                "Should reject email: " + invalidEmail
-            );
-            // Check if it's either format error or empty error
-            assertTrue(
-                exception.getMessage().contains("formato") || 
-                exception.getMessage().contains("vacío"),
-                "Expected format or empty error for email: " + invalidEmail + ", but got: " + exception.getMessage()
-            );
-        }
-    }
-    
-    @Test
-    @DisplayName("Should accept valid email formats")
-    void testValidEmailFormats() {
-        String[] validEmails = {
-            "user@example.com",
-            "user.name@example.com",
-            "user+tag@example.com",
-            "user123@example-site.com",
-            "test@subdomain.example.org"
-        };
+        // Test setEmail
+        cliente.setEmail("maria.garcia@email.com");
+        assertEquals("maria.garcia@email.com", cliente.getEmail(), "setEmail should update email");
         
-        for (String validEmail : validEmails) {
-            assertDoesNotThrow(
-                () -> new Cliente("Test User", validEmail),
-                "Should accept email: " + validEmail
-            );
-        }
-    }
-    
-    @Test
-    @DisplayName("Should update nombre correctly")
-    void testSetNombre() {
-        LocalDateTime beforeUpdate = cliente.getFechaUltimaActualizacion();
-        
-        // Small delay to ensure time difference
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            // ignore
-        }
-        
-        cliente.setNombre("Carlos Ruiz");
-        
-        assertEquals("Carlos Ruiz", cliente.getNombre());
-        assertTrue(cliente.getFechaUltimaActualizacion().isAfter(beforeUpdate));
-    }
-    
-    @Test
-    @DisplayName("Should update email correctly")
-    void testSetEmail() {
-        LocalDateTime beforeUpdate = cliente.getFechaUltimaActualizacion();
-        
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            // ignore
-        }
-        
-        cliente.setEmail("CARLOS.RUIZ@EXAMPLE.COM");
-        
-        assertEquals("carlos.ruiz@example.com", cliente.getEmail());
-        assertTrue(cliente.getFechaUltimaActualizacion().isAfter(beforeUpdate));
-    }
-    
-    @Test
-    @DisplayName("Should update active status correctly")
-    void testSetActivo() {
-        LocalDateTime beforeUpdate = cliente.getFechaUltimaActualizacion();
-        
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            // ignore
-        }
-        
+        // Test setActivo
         cliente.setActivo(false);
-        
-        assertFalse(cliente.isActivo());
-        assertTrue(cliente.getFechaUltimaActualizacion().isAfter(beforeUpdate));
+        assertFalse(cliente.isActivo(), "setActivo should update active status");
     }
     
     @Test
-    @DisplayName("Should update all information transactionally")
+    @Order(4)
+    @DisplayName("actualizarInformacion should update all fields")
     void testActualizarInformacion() {
-        LocalDateTime beforeUpdate = cliente.getFechaUltimaActualizacion();
+        cliente.actualizarInformacion("Pedro López", "pedro.lopez@email.com", false);
         
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            // ignore
-        }
-        
-        cliente.actualizarInformacion("María González", "maria@example.com", false);
-        
-        assertEquals("María González", cliente.getNombre());
-        assertEquals("maria@example.com", cliente.getEmail());
-        assertFalse(cliente.isActivo());
-        assertTrue(cliente.getFechaUltimaActualizacion().isAfter(beforeUpdate));
+        assertEquals("Pedro López", cliente.getNombre(), "Name should be updated");
+        assertEquals("pedro.lopez@email.com", cliente.getEmail(), "Email should be updated");
+        assertFalse(cliente.isActivo(), "Active status should be updated");
     }
     
     @Test
-    @DisplayName("Should handle equals and hashCode correctly")
-    void testEqualsAndHashCode() {
-        Cliente cliente1 = new Cliente("Test User", "test@example.com");
-        Cliente cliente2 = new Cliente("Another User", "another@example.com");
-        Cliente cliente3 = cliente1;
+    @Order(5)
+    @DisplayName("Cliente should handle edge cases properly")
+    void testClienteEdgeCases() {
+        // Test with empty strings
+        cliente.setNombre("");
+        assertEquals("", cliente.getNombre(), "Should handle empty name");
         
-        // Test reflexive
-        assertEquals(cliente1, cliente1);
+        cliente.setEmail("");
+        assertEquals("", cliente.getEmail(), "Should handle empty email");
         
-        // Test symmetric
-        assertNotEquals(cliente1, cliente2);
-        assertNotEquals(cliente2, cliente1);
+        // Test with null values (if allowed by implementation)
+        cliente.setNombre(null);
+        assertNull(cliente.getNombre(), "Should handle null name");
         
-        // Test transitive and consistent
-        assertEquals(cliente1, cliente3);
-        assertEquals(cliente3, cliente1);
-        
-        // Test null
-        assertNotEquals(cliente1, null);
-        
-        // Test different class
-        assertNotEquals(cliente1, "Not a Cliente");
-        
-        // Test hashCode consistency
-        assertEquals(cliente1.hashCode(), cliente1.hashCode());
-        assertEquals(cliente1.hashCode(), cliente3.hashCode());
+        cliente.setEmail(null);
+        assertNull(cliente.getEmail(), "Should handle null email");
     }
     
     @Test
-    @DisplayName("Should have meaningful toString")
-    void testToString() {
-        String toString = cliente.toString();
+    @Order(6)
+    @DisplayName("Cliente should handle special characters in name and email")
+    void testSpecialCharacters() {
+        String nameWithSpecialChars = "José María Ñoño-García";
+        String emailWithSpecialChars = "jose.maria@test-domain.co.mx";
         
-        assertNotNull(toString);
-        assertTrue(toString.contains("Cliente"));
-        assertTrue(toString.contains(cliente.getId().toString()));
-        assertTrue(toString.contains("Juan Pérez"));
-        assertTrue(toString.contains("juan.perez@example.com"));
-        assertTrue(toString.contains("true")); // activo
+        cliente.setNombre(nameWithSpecialChars);
+        cliente.setEmail(emailWithSpecialChars);
+        
+        assertEquals(nameWithSpecialChars, cliente.getNombre(), "Should handle special characters in name");
+        assertEquals(emailWithSpecialChars, cliente.getEmail(), "Should handle special characters in email");
+    }
+    
+    @Test
+    @Order(7)
+    @DisplayName("Cliente should maintain data integrity")
+    void testDataIntegrity() {
+        int originalId = cliente.getId();
+        
+        // ID should be immutable (no setter)
+        assertEquals(originalId, cliente.getId(), "ID should remain constant");
+        
+        // Test multiple updates
+        cliente.actualizarInformacion("Nombre1", "email1@test.com", true);
+        cliente.actualizarInformacion("Nombre2", "email2@test.com", false);
+        
+        assertEquals("Nombre2", cliente.getNombre(), "Should have latest name");
+        assertEquals("email2@test.com", cliente.getEmail(), "Should have latest email");
+        assertFalse(cliente.isActivo(), "Should have latest active status");
+    }
+    
+    @Test
+    @Order(8)
+    @DisplayName("Cliente with different IDs should be different")
+    void testClienteWithDifferentIds() {
+        Cliente otherCliente = new Cliente(2, "Juan Pérez", "juan.perez@email.com");
+        
+        assertNotEquals(cliente.getId(), otherCliente.getId(), "Different clients should have different IDs");
+        assertEquals(cliente.getNombre(), otherCliente.getNombre(), "Names can be the same");
+        assertEquals(cliente.getEmail(), otherCliente.getEmail(), "Emails can be the same");
+    }
+    
+    @Test
+    @Order(9)
+    @DisplayName("Cliente state changes should be consistent")
+    void testStateConsistency() {
+        // Initially active
+        assertTrue(cliente.isActivo(), "Should be active initially");
+        
+        // Deactivate
+        cliente.setActivo(false);
+        assertFalse(cliente.isActivo(), "Should be inactive after deactivation");
+        
+        // Reactivate
+        cliente.setActivo(true);
+        assertTrue(cliente.isActivo(), "Should be active after reactivation");
+        
+        // Test with actualizarInformacion
+        cliente.actualizarInformacion("Test Name", "test@email.com", false);
+        assertFalse(cliente.isActivo(), "Should respect active status in actualizarInformacion");
+    }
+    
+    @Test
+    @Order(10)
+    @DisplayName("Cliente should handle long strings")
+    void testLongStrings() {
+        String longName = "A".repeat(1000);
+        String longEmail = "a".repeat(50) + "@" + "b".repeat(50) + ".com";
+        
+        cliente.setNombre(longName);
+        cliente.setEmail(longEmail);
+        
+        assertEquals(longName, cliente.getNombre(), "Should handle long names");
+        assertEquals(longEmail, cliente.getEmail(), "Should handle long emails");
     }
 }

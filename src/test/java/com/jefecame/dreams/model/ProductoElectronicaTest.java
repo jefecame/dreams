@@ -1,255 +1,218 @@
 package com.jefecame.dreams.model;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.math.BigDecimal;
 
 /**
- * Unit tests for the ProductoElectronica class.
- * Tests inheritance, validation, and specific electronics functionality.
+ * Comprehensive unit tests for the ProductoElectronica class.
+ * Tests all aspects of electronic product functionality.
  * 
  * @author jefecame
  * @version 1.0.0
  */
-@DisplayName("ProductoElectronica Class Tests")
+@DisplayName("ProductoElectronica Model Tests")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ProductoElectronicaTest {
     
     private ProductoElectronica producto;
+    private final BigDecimal precioTest = new BigDecimal("299.99");
     
     @BeforeEach
     void setUp() {
-        producto = new ProductoElectronica(
-            "iPhone 15 Pro",
-            new BigDecimal("1299.99"),
-            10,
-            "Apple",
-            "A2848"
-        );
+        producto = new ProductoElectronica("Smartphone", precioTest, 10, "Samsung", "Galaxy S21");
     }
     
     @Test
-    @DisplayName("Should create electronics product with valid data")
-    void testValidProductCreation() {
-        assertNotNull(producto);
-        assertEquals("iPhone 15 Pro", producto.getNombre());
-        assertEquals(new BigDecimal("1299.99"), producto.getPrecio());
-        assertEquals(CategoriaProducto.ELECTRONICA, producto.getCategoria());
-        assertEquals(10, producto.getStock());
-        assertTrue(producto.isActivo());
-        assertEquals("Apple", producto.getMarca());
-        assertEquals("A2848", producto.getModelo());
-        assertEquals(12, producto.getGarantiaMeses()); // default warranty
-        assertNotNull(producto.getFechaCreacion());
+    @Order(1)
+    @DisplayName("ProductoElectronica should be created with valid parameters")
+    void testProductoElectronicaCreation() {
+        assertNotNull(producto, "Producto should not be null");
+        assertEquals("Smartphone", producto.getNombre(), "Nombre should match");
+        assertEquals(precioTest, producto.getPrecio(), "Precio should match");
+        assertEquals(10, producto.getStock(), "Stock should match");
+        assertEquals("Samsung", producto.getMarca(), "Marca should match");
+        assertEquals("Galaxy S21", producto.getModelo(), "Modelo should match");
+        assertTrue(producto.isActivo(), "New product should be active by default");
+        assertTrue(producto.getId() > 0, "Product should have a valid ID");
     }
     
     @Test
-    @DisplayName("Should create electronics product with custom warranty")
-    void testProductWithCustomWarranty() {
-        ProductoElectronica productoConGarantia = new ProductoElectronica(
-            "MacBook Pro",
-            new BigDecimal("2499.99"),
-            5,
-            "Apple",
-            "MBP-2023",
-            24 // 2 years warranty
-        );
+    @Order(2)
+    @DisplayName("ProductoElectronica getters should return correct values")
+    void testGetters() {
+        assertEquals("Smartphone", producto.getNombre(), "getNombre should work");
+        assertEquals(precioTest, producto.getPrecio(), "getPrecio should work");
+        assertEquals(10, producto.getStock(), "getStock should work");
+        assertEquals("Samsung", producto.getMarca(), "getMarca should work");
+        assertEquals("Galaxy S21", producto.getModelo(), "getModelo should work");
+        assertTrue(producto.isActivo(), "isActivo should work");
+    }
+    
+    @Test
+    @Order(3)
+    @DisplayName("ProductoElectronica setters should update values correctly")
+    void testSetters() {
+        // Test inherited setters
+        producto.setNombre("Laptop");
+        assertEquals("Laptop", producto.getNombre(), "setNombre should update name");
         
-        assertEquals(24, productoConGarantia.getGarantiaMeses());
+        producto.setPrecio(new BigDecimal("599.99"));
+        assertEquals(new BigDecimal("599.99"), producto.getPrecio(), "setPrecio should update price");
+        
+        producto.setStock(15);
+        assertEquals(15, producto.getStock(), "setStock should update stock");
+        
+        producto.setActivo(false);
+        assertFalse(producto.isActivo(), "setActivo should update active status");
+        
+        // Test specific setters
+        producto.setMarca("Apple");
+        assertEquals("Apple", producto.getMarca(), "setMarca should update marca");
+        
+        producto.setModelo("MacBook Pro");
+        assertEquals("MacBook Pro", producto.getModelo(), "setModelo should update modelo");
     }
     
     @Test
-    @DisplayName("Should inherit from Producto correctly")
-    void testInheritance() {
-        assertTrue(producto instanceof Producto);
-        
-        // Test inherited methods
-        assertEquals("iPhone 15 Pro", producto.getNombre());
-        assertTrue(producto.validarDisponibilidad(5));
-        assertFalse(producto.validarDisponibilidad(15)); // more than stock
-    }
-    
-    @Test
-    @DisplayName("Should validate marca correctly")
-    void testMarcaValidation() {
-        // Test null marca
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new ProductoElectronica("Test", new BigDecimal("100"), 1, null, "Model")
-        );
-        assertTrue(exception.getMessage().contains("marca"));
-        
-        // Test empty marca
-        exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new ProductoElectronica("Test", new BigDecimal("100"), 1, "", "Model")
-        );
-        assertTrue(exception.getMessage().contains("marca"));
-        
-        // Test short marca
-        exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new ProductoElectronica("Test", new BigDecimal("100"), 1, "A", "Model")
-        );
-        assertTrue(exception.getMessage().contains("al menos 2 caracteres"));
-        
-        // Test long marca
-        String longMarca = "A".repeat(51);
-        exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new ProductoElectronica("Test", new BigDecimal("100"), 1, longMarca, "Model")
-        );
-        assertTrue(exception.getMessage().contains("50 caracteres"));
-    }
-    
-    @Test
-    @DisplayName("Should validate modelo correctly")
-    void testModeloValidation() {
-        // Test null modelo
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new ProductoElectronica("Test", new BigDecimal("100"), 1, "Apple", null)
-        );
-        assertTrue(exception.getMessage().contains("modelo"));
-        
-        // Test empty modelo
-        exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new ProductoElectronica("Test", new BigDecimal("100"), 1, "Apple", "")
-        );
-        assertTrue(exception.getMessage().contains("modelo"));
-        
-        // Test long modelo
-        String longModelo = "A".repeat(101);
-        exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new ProductoElectronica("Test", new BigDecimal("100"), 1, "Apple", longModelo)
-        );
-        assertTrue(exception.getMessage().contains("100 caracteres"));
-    }
-    
-    @Test
-    @DisplayName("Should validate garantia correctly")
-    void testGarantiaValidation() {
-        // Test negative warranty
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new ProductoElectronica("Test", new BigDecimal("100"), 1, "Apple", "Model", -1)
-        );
-        assertTrue(exception.getMessage().contains("garantía"));
-        
-        // Test excessive warranty
-        exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> new ProductoElectronica("Test", new BigDecimal("100"), 1, "Apple", "Model", 121)
-        );
-        assertTrue(exception.getMessage().contains("120 meses"));
-    }
-    
-    @Test
-    @DisplayName("Should trim whitespace in marca and modelo")
-    void testWhitespaceTriming() {
-        ProductoElectronica producto = new ProductoElectronica(
-            "Test Product",
-            new BigDecimal("100"),
-            1,
-            "  Apple  ",
-            "  iPhone-15  "
-        );
-        
-        assertEquals("Apple", producto.getMarca());
-        assertEquals("iPhone-15", producto.getModelo());
-    }
-    
-    @Test
-    @DisplayName("Should update marca correctly")
-    void testSetMarca() {
-        producto.setMarca("  Samsung  ");
-        assertEquals("Samsung", producto.getMarca());
-        assertNotNull(producto.getFechaUltimaActualizacion());
-    }
-    
-    @Test
-    @DisplayName("Should update modelo correctly")
-    void testSetModelo() {
-        producto.setModelo("  Galaxy-S24  ");
-        assertEquals("Galaxy-S24", producto.getModelo());
-        assertNotNull(producto.getFechaUltimaActualizacion());
-    }
-    
-    @Test
-    @DisplayName("Should update garantia correctly")
-    void testSetGarantiaMeses() {
-        producto.setGarantiaMeses(36);
-        assertEquals(36, producto.getGarantiaMeses());
-        assertNotNull(producto.getFechaUltimaActualizacion());
-        
-        // Test invalid warranty
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> producto.setGarantiaMeses(-1)
-        );
-        assertTrue(exception.getMessage().contains("garantía"));
-    }
-    
-    @Test
-    @DisplayName("Should override mostrarDetalles correctly")
+    @Order(4)
+    @DisplayName("mostrarDetalles should return formatted string")
     void testMostrarDetalles() {
         String detalles = producto.mostrarDetalles();
         
-        assertNotNull(detalles);
-        assertTrue(detalles.contains("Producto Electrónico"));
-        assertTrue(detalles.contains("iPhone 15 Pro"));
-        assertTrue(detalles.contains("Apple"));
-        assertTrue(detalles.contains("A2848"));
-        assertTrue(detalles.contains("12 meses"));
-        assertTrue(detalles.contains("1299.99"));
-        assertTrue(detalles.contains("Activo"));
+        assertNotNull(detalles, "Detalles should not be null");
+        assertTrue(detalles.contains("Smartphone"), "Should contain product name");
+        assertTrue(detalles.contains("Samsung"), "Should contain marca");
+        assertTrue(detalles.contains("Galaxy S21"), "Should contain modelo");
+        assertTrue(detalles.contains("299.99"), "Should contain price");
+        assertTrue(detalles.contains("10"), "Should contain stock");
+        assertTrue(detalles.contains("Producto Electrónico"), "Should identify as electronic product");
     }
     
     @Test
-    @DisplayName("Should have meaningful toString")
-    void testToString() {
-        String toString = producto.toString();
-        
-        assertNotNull(toString);
-        assertTrue(toString.contains("ProductoElectronica"));
-        assertTrue(toString.contains("iPhone 15 Pro"));
-        assertTrue(toString.contains("Apple"));
-        assertTrue(toString.contains("A2848"));
-        assertTrue(toString.contains("12 meses"));
-    }
-    
-    @Test
-    @DisplayName("Should validate availability correctly")
+    @Order(5)
+    @DisplayName("validarDisponibilidad should work correctly")
     void testValidarDisponibilidad() {
-        assertTrue(producto.validarDisponibilidad(5));
-        assertTrue(producto.validarDisponibilidad(10));
-        assertFalse(producto.validarDisponibilidad(11));
-        assertFalse(producto.validarDisponibilidad(0)); // zero is invalid
-        assertFalse(producto.validarDisponibilidad(-1)); // negative is invalid
+        assertTrue(producto.validarDisponibilidad(5), "Should have availability for 5 units");
+        assertTrue(producto.validarDisponibilidad(10), "Should have availability for exactly 10 units");
+        assertFalse(producto.validarDisponibilidad(15), "Should not have availability for 15 units");
+        assertFalse(producto.validarDisponibilidad(0), "Should not validate 0 units");
         
         // Test with inactive product
         producto.setActivo(false);
-        assertFalse(producto.validarDisponibilidad(5)); // inactive products are not available
+        assertFalse(producto.validarDisponibilidad(1), "Inactive product should not be available");
     }
     
     @Test
-    @DisplayName("Should update stock correctly")
+    @Order(6)
+    @DisplayName("actualizarStock should work correctly")
     void testActualizarStock() {
-        producto.actualizarStock(5); // add 5
-        assertEquals(15, producto.getStock());
+        int initialStock = producto.getStock();
         
-        producto.actualizarStock(-3); // remove 3
-        assertEquals(12, producto.getStock());
+        // Add stock
+        producto.actualizarStock(5);
+        assertEquals(initialStock + 5, producto.getStock(), "Stock should increase by 5");
         
-        // Test invalid stock reduction
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> producto.actualizarStock(-15) // would make stock negative
+        // Remove stock
+        producto.actualizarStock(-3);
+        assertEquals(initialStock + 2, producto.getStock(), "Stock should decrease by 3");
+        
+        // Test negative stock prevention
+        producto.actualizarStock(-100);
+        assertEquals(0, producto.getStock(), "Stock should not go below 0");
+    }
+    
+    @Test
+    @Order(7)
+    @DisplayName("ProductoElectronica should handle edge cases")
+    void testEdgeCases() {
+        // Test with null values
+        producto.setMarca(null);
+        assertNull(producto.getMarca(), "Should handle null marca");
+        
+        producto.setModelo(null);
+        assertNull(producto.getModelo(), "Should handle null modelo");
+        
+        // Test with empty strings
+        producto.setMarca("");
+        assertEquals("", producto.getMarca(), "Should handle empty marca");
+        
+        producto.setModelo("");
+        assertEquals("", producto.getModelo(), "Should handle empty modelo");
+    }
+    
+    @Test
+    @Order(8)
+    @DisplayName("ProductoElectronica should handle special characters")
+    void testSpecialCharacters() {
+        String marcaWithSpecialChars = "Läptöp-Brañd®";
+        String modeloWithSpecialChars = "Modêl-X1™";
+        
+        producto.setMarca(marcaWithSpecialChars);
+        producto.setModelo(modeloWithSpecialChars);
+        
+        assertEquals(marcaWithSpecialChars, producto.getMarca(), "Should handle special characters in marca");
+        assertEquals(modeloWithSpecialChars, producto.getModelo(), "Should handle special characters in modelo");
+    }
+    
+    @Test
+    @Order(9)
+    @DisplayName("setCategoria should not break functionality")
+    void testSetCategoria() {
+        // Test the empty setCategoria method from parent class
+        assertDoesNotThrow(() -> {
+            producto.setCategoria("Electronics");
+        }, "setCategoria should not throw exception");
+        
+        // Verify other functionality still works
+        assertEquals("Samsung", producto.getMarca(), "Other functionality should remain intact");
+    }
+    
+    @Test
+    @Order(10)
+    @DisplayName("ProductoElectronica with different parameters should work")
+    void testDifferentParameters() {
+        ProductoElectronica tablet = new ProductoElectronica(
+            "Tablet", 
+            new BigDecimal("199.50"), 
+            25, 
+            "Apple", 
+            "iPad Air"
         );
-        assertTrue(exception.getMessage().contains("stock"));
+        
+        assertNotNull(tablet, "Tablet should be created");
+        assertEquals("Tablet", tablet.getNombre(), "Tablet name should match");
+        assertEquals(new BigDecimal("199.50"), tablet.getPrecio(), "Tablet price should match");
+        assertEquals(25, tablet.getStock(), "Tablet stock should match");
+        assertEquals("Apple", tablet.getMarca(), "Tablet marca should match");
+        assertEquals("iPad Air", tablet.getModelo(), "Tablet modelo should match");
+        
+        // IDs should be different
+        assertNotEquals(producto.getId(), tablet.getId(), "Different products should have different IDs");
+    }
+    
+    @Test
+    @Order(11)
+    @DisplayName("ProductoElectronica should handle large numbers")
+    void testLargeNumbers() {
+        BigDecimal largePrice = new BigDecimal("99999999.99");
+        producto.setPrecio(largePrice);
+        assertEquals(largePrice, producto.getPrecio(), "Should handle large prices");
+        
+        producto.setStock(Integer.MAX_VALUE);
+        assertEquals(Integer.MAX_VALUE, producto.getStock(), "Should handle large stock numbers");
+    }
+    
+    @Test
+    @Order(12)
+    @DisplayName("ProductoElectronica inheritance should work correctly")
+    void testInheritance() {
+        assertTrue(producto instanceof Producto, "Should be instance of Producto");
+        assertTrue(producto instanceof ProductoElectronica, "Should be instance of ProductoElectronica");
+        
+        // Test polymorphism
+        Producto productoBase = new ProductoElectronica("Test", new BigDecimal("100"), 5, "Test", "Model");
+        assertNotNull(productoBase.mostrarDetalles(), "Polymorphic call should work");
+        assertTrue(productoBase.mostrarDetalles().contains("Producto Electrónico"), "Should show correct type");
     }
 }

@@ -1,0 +1,15 @@
+com\jefecame\dreams\model\ProductoElectronica.class
+com\jefecame\dreams\model\DetalleVenta.class
+com\jefecame\dreams\model\ProductoRopa.class
+com\jefecame\dreams\model\Producto.class
+com\jefecame\dreams\service\ClienteService.class
+com\jefecame\dreams\service\VentaService.class
+com\jefecame\App.class
+com\jefecame\dreams\model\Cliente.class
+com\jefecame\dreams\service\ProductoService.class
+com\jefecame\dreams\model\Venta.class
+com\jefecame\dreams\view\Tienda.class
+com\jefecame\dreams\repository\ProductoRepository.class
+com\jefecame\dreams\model\EstadoVenta.class
+com\jefecame\dreams\repository\ClienteRepository.class
+com\jefecame\dreams\repository\VentaRepository.class

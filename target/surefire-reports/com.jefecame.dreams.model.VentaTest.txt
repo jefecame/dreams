@@ -1,0 +1,27 @@
+-------------------------------------------------------------------------------
+Test set: com.jefecame.dreams.model.VentaTest
+-------------------------------------------------------------------------------
+Tests run: 15, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.223 s <<< FAILURE! -- in com.jefecame.dreams.model.VentaTest
+com.jefecame.dreams.model.VentaTest.testProductosVentaImmutability -- Time elapsed: 0.004 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Should not be able to modify the returned list ==> Expected java.lang.Exception to be thrown, but nothing was thrown.
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:39)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3127)
+	at com.jefecame.dreams.model.VentaTest.testProductosVentaImmutability(VentaTest.java:263)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+com.jefecame.dreams.model.VentaTest.testCompleteWorkflow -- Time elapsed: 0.013 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Subtotal should be calculated correctly ==> expected: <389.97> but was: <389.96>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1152)
+	at com.jefecame.dreams.model.VentaTest.testCompleteWorkflow(VentaTest.java:292)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
