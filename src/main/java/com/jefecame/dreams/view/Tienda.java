@@ -37,29 +37,21 @@ public class Tienda {
     private Scanner scanner;
     
     /**
-     * Constructor que inicializa el menú con los servicios necesarios.
-     * 
-     * @param nombre nombre de la tienda
-     * @param clienteService servicio de gestión de clientes
-     * @param productoService servicio de gestión de productos
-     * @param ventaService servicio de gestión de ventas
-     */
-    public Tienda(String nombre, ClienteService clienteService, ProductoService productoService, VentaService ventaService) {
-        this.nombre = nombre;
-        this.clienteService = clienteService;
-        this.productoService = productoService;
-        this.ventaService = ventaService;
-        this.scanner = new Scanner(System.in);
-    }
-    
-    /**
      * Constructor por defecto que inicializa todos los servicios.
+     * Crea repositorios compartidos para asegurar consistencia de datos.
      */
     public Tienda() {
         this.nombre = "Dreams";
-        this.clienteService = new ClienteService();
-        this.productoService = new ProductoService();
-        this.ventaService = new VentaService();
+        
+        // Crear repositorios compartidos
+        var clienteRepository = new com.jefecame.dreams.repository.ClienteRepository();
+        var productoRepository = new com.jefecame.dreams.repository.ProductoRepository();
+        var ventaRepository = new com.jefecame.dreams.repository.VentaRepository();
+        
+        // Inicializar servicios con repositorios compartidos
+        this.clienteService = new ClienteService(clienteRepository);
+        this.productoService = new ProductoService(productoRepository);
+        this.ventaService = new VentaService(ventaRepository, productoRepository, clienteRepository);
         this.scanner = new Scanner(System.in);
     }
     
@@ -380,7 +372,7 @@ public class Tienda {
             
             Cliente cliente = clienteService.buscarCliente(id);
             if (cliente != null) {
-                System.out.println("\\nCliente encontrado:");
+                System.out.println("Cliente encontrado:");
                 System.out.printf("ID: %d%n", cliente.getId());
                 System.out.printf("Nombre: %s%n", cliente.getNombre());
                 System.out.printf("Email: %s%n", cliente.getEmail());
