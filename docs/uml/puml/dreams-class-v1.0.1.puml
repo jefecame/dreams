@@ -4,8 +4,9 @@
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
 skinparam packageStyle rectangle
-
-title Dreams Sistema de Tienda Departamental - Class Diagram v1.0.1
+skinparam backgroundColor #DarkSlateGray
+title <color:#White>Dreams Sistema de Tienda Departamental - Class Diagram v1.0.1</color>
+center header <color:#White>Ing. Jesús Fernando Carrasco Mendoza</color>
 
 package "com.jefecame" {
     class App {
