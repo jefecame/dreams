@@ -1,18 +1,25 @@
 package com.jefecame.dreams.view;
 
-import com.jefecame.dreams.service.ClienteService;
-import com.jefecame.dreams.service.ProductoService;
-import com.jefecame.dreams.service.VentaService;
+/* Modelos */
 import com.jefecame.dreams.model.Cliente;
+import com.jefecame.dreams.model.Venta;
 import com.jefecame.dreams.model.Producto;
+
+/* Modelos (Herencia) */
 import com.jefecame.dreams.model.ProductoElectronica;
 import com.jefecame.dreams.model.ProductoRopa;
-import com.jefecame.dreams.model.Venta;
 import com.jefecame.dreams.model.DetalleVenta;
 //import com.jefecame.dreams.model.EstadoVenta;
+
+/* Utilidades */
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
+
+/* Servicios (Lógica de negocios) */
+import com.jefecame.dreams.service.ClienteService;
+import com.jefecame.dreams.service.ProductoService;
+import com.jefecame.dreams.service.VentaService;
 
 /**
  * Clase que maneja la interfaz de usuario basada en consola.
@@ -21,7 +28,7 @@ import java.util.Scanner;
  * @author jefecame
  * @version 1.0.0
  */
-public class MenuConsola {
+public class Tienda {
     
     private ClienteService clienteService;
     private ProductoService productoService;
@@ -35,7 +42,7 @@ public class MenuConsola {
      * @param productoService servicio de gestión de productos
      * @param ventaService servicio de gestión de ventas
      */
-    public MenuConsola(ClienteService clienteService, ProductoService productoService, VentaService ventaService) {
+    public Tienda(ClienteService clienteService, ProductoService productoService, VentaService ventaService) {
         this.clienteService = clienteService;
         this.productoService = productoService;
         this.ventaService = ventaService;
@@ -45,7 +52,7 @@ public class MenuConsola {
     /**
      * Constructor por defecto que inicializa todos los servicios.
      */
-    public MenuConsola() {
+    public Tienda() {
         this.clienteService = new ClienteService();
         this.productoService = new ProductoService();
         this.ventaService = new VentaService();
@@ -60,7 +67,7 @@ public class MenuConsola {
         
         while (continuar) {
             System.out.println("\n" + "=".repeat(50));
-            System.out.println("       DREAMS - Sistema de Tienda");
+            System.out.println("       DREAMS - Sistema de Tienda Departamental");
             System.out.println("=".repeat(50));
             System.out.println("1. Gestionar Clientes");
             System.out.println("2. Gestionar Productos");

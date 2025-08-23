@@ -25,23 +25,7 @@ public class Venta {
     private static final BigDecimal TASA_IMPUESTO = new BigDecimal("0.16"); // 16% IVA
     
     /**
-     * Constructor para crear una nueva venta.
-     * 
-     * @param idCliente identificador del cliente (se maneja a través del objeto Cliente)
-     * @param fecha fecha de creación de la venta
-     */
-    public Venta(int idCliente, LocalDateTime fecha) {
-        this.id = contadorId++;
-        this.fechaCreacion = fecha;
-        this.productosVenta = new ArrayList<>();
-        this.subtotal = BigDecimal.ZERO;
-        this.impuestos = BigDecimal.ZERO;
-        this.total = BigDecimal.ZERO;
-        this.estado = EstadoVenta.PROCESANDO;
-    }
-    
-    /**
-     * Constructor alternativo que acepta directamente el objeto Cliente.
+     * Constructor para crear una nueva venta que acepta directamente el objeto Cliente.
      * 
      * @param cliente cliente asociado a la venta
      */

@@ -72,7 +72,6 @@ public class ProductoElectronica extends Producto {
      */
     @Override
     public String mostrarDetalles() {
-        return String.format("Producto Electrónico: %s - Marca: %s, Modelo: %s, Precio: $%.2f, Stock: %d", 
-                           nombre, marca, modelo, precio, stock);
+        return String.format("Producto Electrónico: %s - Marca: %s, Modelo: %s, Precio: $%.2f, Stock: %d", nombre, marca, modelo, precio, stock);
     }
 }

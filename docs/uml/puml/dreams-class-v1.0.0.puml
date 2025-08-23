@@ -11,9 +11,9 @@ skinparam packageStyle rectangle
 title <color:#White>Dreams Sistema de Tienda Departamental</color>
 center header <color:#White>Ing. Jesús Fernando Carrasco Mendoza</color>
 
-' =================
-' Capa de Principal
-' =================
+' ====================
+' Aplicación Principal
+' ====================
 package dreams #LightCyan {
     class App {
         --
@@ -21,9 +21,9 @@ package dreams #LightCyan {
     }
 }
 
-' =============
-' Capa de Vista
-' =============
+' ================================
+' Capa View (Vista o Presentación)
+' ================================
 package dreams.view #WhiteSmoke {
     class MenuConsola {
         - clienteService: ClienteService
@@ -37,9 +37,9 @@ package dreams.view #WhiteSmoke {
     }
 }
 
-' ================
-' Capa de Servicio
-' ================
+' ===========================================
+' Capa Service (Servicio o Lógica de Negocio)
+' ===========================================
 package dreams.service #SeaShell {
 
     class ClienteService {
@@ -75,9 +75,9 @@ package dreams.service #SeaShell {
 }
 
 
-' ===================
-' Capa de Repositorio
-' ===================
+' ============================================
+' Capa Repository (Repositorio o Persistencia)
+' ============================================
 package dreams.repository #LightGrey {
 
     class ClienteRepository {
@@ -109,9 +109,9 @@ package dreams.repository #LightGrey {
 
 }
 
-' ==============
-' Capa de Modelo
-' ==============
+' =============================
+' Capa Model (Modelo o Dominio)
+' =============================
 package dreams.model #Lavender {
 
     '=== Modelos ===

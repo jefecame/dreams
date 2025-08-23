@@ -19,23 +19,7 @@ public class DetalleVenta {
     private static int contadorId = 1;
     
     /**
-     * Constructor para crear un nuevo detalle de venta.
-     * 
-     * @param idProducto identificador del producto (se obtiene del producto)
-     * @param idVenta identificador de la venta
-     * @param cantidad cantidad del producto
-     * @param precioUnitario precio unitario del producto
-     */
-    public DetalleVenta(int idProducto, int idVenta, int cantidad, BigDecimal precioUnitario) {
-        this.id = contadorId++;
-        this.idVenta = idVenta;
-        this.cantidad = cantidad;
-        this.precioUnitario = precioUnitario;
-        this.subtotal = calcularSubtotal();
-    }
-    
-    /**
-     * Constructor alternativo que acepta directamente el objeto Producto.
+     * Constructor para crear un nuevo detalle de venta que acepta directamente el objeto Producto.
      * 
      * @param producto producto asociado al detalle
      * @param idVenta identificador de la venta
