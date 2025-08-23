@@ -57,12 +57,18 @@ public class VentaService {
             throw new IllegalArgumentException("El cliente no puede ser nulo");
         }
         
-        if (!cliente.isActivo()) {
+        // Validar que el cliente exista en el repositorio
+        Cliente clienteExistente = clienteRepository.buscarPorId(cliente.getId());
+        if (clienteExistente == null) {
+            throw new IllegalArgumentException("El cliente no existe en el sistema");
+        }
+        
+        if (!clienteExistente.isActivo()) {
             throw new IllegalArgumentException("No se puede crear una venta para un cliente inactivo");
         }
         
-        // Crear la nueva venta
-        Venta nuevaVenta = new Venta(cliente);
+        // Crear la nueva venta usando el cliente validado del repositorio
+        Venta nuevaVenta = new Venta(clienteExistente);
         ventaRepository.guardar(nuevaVenta);
         
         return nuevaVenta;
@@ -202,9 +208,20 @@ public class VentaService {
      * 
      * @param cliente cliente del cual obtener las ventas
      * @return lista de ventas del cliente
+     * @throws IllegalArgumentException si el cliente es inválido
      */
     public List<Venta> obtenerVentasPorCliente(Cliente cliente) {
-        return ventaRepository.obtenerVentasPorCliente(cliente);
+        if (cliente == null) {
+            throw new IllegalArgumentException("El cliente no puede ser nulo");
+        }
+        
+        // Validar que el cliente exista en el repositorio
+        Cliente clienteExistente = clienteRepository.buscarPorId(cliente.getId());
+        if (clienteExistente == null) {
+            throw new IllegalArgumentException("El cliente no existe en el sistema");
+        }
+        
+        return ventaRepository.obtenerVentasPorCliente(clienteExistente);
     }
     
     /**
@@ -265,5 +282,49 @@ public class VentaService {
         }
         
         return removido;
+    }
+    
+    /**
+     * Inicia una nueva venta para un cliente por ID.
+     * 
+     * @param clienteId identificador del cliente
+     * @return la venta creada
+     * @throws IllegalArgumentException si el cliente es inválido
+     */
+    public Venta iniciarNuevaVentaPorClienteId(int clienteId) {
+        // Buscar el cliente en el repositorio
+        Cliente cliente = clienteRepository.buscarPorId(clienteId);
+        if (cliente == null) {
+            throw new IllegalArgumentException("No se encontró un cliente con ID: " + clienteId);
+        }
+        
+        return iniciarNuevaVenta(cliente);
+    }
+    
+    /**
+     * Obtiene todas las ventas de un cliente por ID.
+     * 
+     * @param clienteId identificador del cliente
+     * @return lista de ventas del cliente
+     * @throws IllegalArgumentException si el cliente no existe
+     */
+    public List<Venta> obtenerVentasPorClienteId(int clienteId) {
+        Cliente cliente = clienteRepository.buscarPorId(clienteId);
+        if (cliente == null) {
+            throw new IllegalArgumentException("No se encontró un cliente con ID: " + clienteId);
+        }
+        
+        return ventaRepository.obtenerVentasPorCliente(cliente);
+    }
+    
+    /**
+     * Valida que un cliente esté activo y exista en el sistema.
+     * 
+     * @param clienteId identificador del cliente a validar
+     * @return true si el cliente es válido y activo, false en caso contrario
+     */
+    public boolean validarClienteActivo(int clienteId) {
+        Cliente cliente = clienteRepository.buscarPorId(clienteId);
+        return cliente != null && cliente.isActivo();
     }
 }
