@@ -25,11 +25,13 @@ package dreams #LightCyan {
 ' Capa View (Vista o Presentación)
 ' ================================
 package dreams.view #WhiteSmoke {
-    class MenuConsola {
+    class Tienda {
+        - nombre: String
         - clienteService: ClienteService
         - productoService: ProductoService
         - ventaService: VentaService
         --
+        + gtNombre(): void
         + mostrarMenuPrincipal(): void
         + gestionarClientes(): void
         + gestionarProductos(): void

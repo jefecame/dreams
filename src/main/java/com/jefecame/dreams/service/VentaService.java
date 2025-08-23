@@ -20,7 +20,7 @@ public class VentaService {
     
     private VentaRepository ventaRepository;
     private ProductoRepository productoRepository;
-    private ClienteRepository clienteRepository;
+    //private ClienteRepository clienteRepository;
     
     /**
      * Constructor que inicializa el servicio con los repositorios necesarios.

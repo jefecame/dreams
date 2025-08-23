@@ -30,6 +30,7 @@ import com.jefecame.dreams.service.VentaService;
  */
 public class Tienda {
     
+    private String nombre;
     private ClienteService clienteService;
     private ProductoService productoService;
     private VentaService ventaService;
@@ -38,11 +39,13 @@ public class Tienda {
     /**
      * Constructor que inicializa el menú con los servicios necesarios.
      * 
+     * @param nombre nombre de la tienda
      * @param clienteService servicio de gestión de clientes
      * @param productoService servicio de gestión de productos
      * @param ventaService servicio de gestión de ventas
      */
-    public Tienda(ClienteService clienteService, ProductoService productoService, VentaService ventaService) {
+    public Tienda(String nombre, ClienteService clienteService, ProductoService productoService, VentaService ventaService) {
+        this.nombre = nombre;
         this.clienteService = clienteService;
         this.productoService = productoService;
         this.ventaService = ventaService;
@@ -53,10 +56,20 @@ public class Tienda {
      * Constructor por defecto que inicializa todos los servicios.
      */
     public Tienda() {
+        this.nombre = "Dreams";
         this.clienteService = new ClienteService();
         this.productoService = new ProductoService();
         this.ventaService = new VentaService();
         this.scanner = new Scanner(System.in);
+    }
+    
+    /**
+     * Obtiene el nombre de la tienda.
+     * 
+     * @return el nombre de la tienda
+     */
+    public String getNombre() {
+        return nombre;
     }
     
     /**
