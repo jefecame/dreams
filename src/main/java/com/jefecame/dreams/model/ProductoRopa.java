@@ -72,6 +72,6 @@ public class ProductoRopa extends Producto {
      */
     @Override
     public String mostrarDetalles() {
-        return String.format("Producto de Ropa: %s - Talla: %s, Color: %s, Precio: $%.2f, Stock: %d", nombre, talla, color, precio, stock);
+        return String.format("Producto de Ropa: %d - ID,  %s - Talla: %s, Color: %s, Precio: $%.2f, Stock: %d", id, nombre, talla, color, precio, stock);
     }
 }

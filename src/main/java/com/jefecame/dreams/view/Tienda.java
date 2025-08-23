@@ -253,7 +253,7 @@ public class Tienda {
             
             // Iniciar nueva venta
             Venta venta = ventaService.iniciarNuevaVenta(cliente);
-            System.out.println("\\nVenta iniciada. ID de venta: " + venta.getId());
+            System.out.println("\nVenta iniciada. ID de venta: " + venta.getId());
             
             // Agregar productos a la venta
             boolean agregarMasProductos = true;
@@ -264,12 +264,12 @@ public class Tienda {
                     break;
                 }
                 
-                System.out.println("\\nProductos disponibles:");
+                System.out.println("\nProductos disponibles:");
                 for (Producto producto : productos) {
                     System.out.println(producto.mostrarDetalles());
                 }
                 
-                System.out.print("\\nIngrese el ID del producto (0 para finalizar): ");
+                System.out.print("\nIngrese el ID del producto (0 para finalizar): ");
                 int idProducto = Integer.parseInt(scanner.nextLine());
                 
                 if (idProducto == 0) {
@@ -300,7 +300,7 @@ public class Tienda {
             // Mostrar resumen y finalizar venta
             if (!venta.getProductosVenta().isEmpty()) {
                 mostrarResumenVenta(venta);
-                System.out.print("\\n¿Desea finalizar la venta? (s/n): ");
+                System.out.print("\n¿Desea finalizar la venta? (s/n): ");
                 String respuesta = scanner.nextLine().toLowerCase();
                 
                 if (respuesta.startsWith("s")) {
@@ -351,7 +351,7 @@ public class Tienda {
             return;
         }
         
-        System.out.println("\\nLista de clientes:");
+        System.out.println("\nLista de clientes:");
         System.out.println("-".repeat(60));
         System.out.printf("%-5s %-20s %-25s %-10s%n", "ID", "Nombre", "Email", "Estado");
         System.out.println("-".repeat(60));
@@ -503,7 +503,7 @@ public class Tienda {
             return;
         }
         
-        System.out.println("\\nLista de productos:");
+        System.out.println("\nLista de productos:");
         System.out.println("-".repeat(80));
         for (Producto producto : productos) {
             System.out.println(producto.mostrarDetalles());
@@ -519,7 +519,7 @@ public class Tienda {
             
             Producto producto = productoService.buscarProducto(id);
             if (producto != null) {
-                System.out.println("\\nProducto encontrado:");
+                System.out.println("\nProducto encontrado:");
                 System.out.println(producto.mostrarDetalles());
                 System.out.println("Estado: " + (producto.isActivo() ? "Activo" : "Inactivo"));
             } else {
@@ -576,7 +576,7 @@ public class Tienda {
             return;
         }
         
-        System.out.println("\\nLista de ventas:");
+        System.out.println("\nLista de ventas:");
         System.out.println("-".repeat(80));
         System.out.printf("%-5s %-20s %-15s %-15s %-12s%n", "ID", "Cliente", "Fecha", "Total", "Estado");
         System.out.println("-".repeat(80));
@@ -592,7 +592,7 @@ public class Tienda {
     }
     
     private void mostrarResumenVenta(Venta venta) {
-        System.out.println("\\n" + "=".repeat(50));
+        System.out.println("\n" + "=".repeat(50));
         System.out.println("           RESUMEN DE VENTA");
         System.out.println("=".repeat(50));
         System.out.printf("ID Venta: %d%n", venta.getId());
